@@ -1,39 +1,23 @@
+package Game;
+
 public class Game {
     private char[][] board;
-    private int[] lastMove;
-    private char turn;
 
     public Game() {
         board = new char[9][9];
-        turn = 'B';
-        lastMove = new int[2];
     }
 
-    public boolean makeMove(int row, int col) {
-        if (board[row][col] != 0) {
-            System.out.println((int) board[row][col]);
-            return false;
-        }
-
-        board[row][col] = this.turn;
-        lastMove[0] = row;
-        lastMove[1] = col;
-        swapTurns();
+    public boolean setCell(CellPos pos, char symbol) {
+        if (pos.row < 0 || pos.row > 8 || pos.col < 0 || pos.col > 8) return false;
+        if (board[pos.row][pos.col] != 0) return false;
+        board[pos.row][pos.col] = symbol;
         return true;
     }
 
-    private void swapTurns() {
-        if (turn == 'W') {
-            turn = 'B';
-        } else {
-            turn = 'W';
-        }
-    }
-
-    public boolean checkForWin() {
-        int row = lastMove[0];
-        int col = lastMove[1];
-        char color = board[lastMove[0]][lastMove[1]];
+    public boolean checkForWin(CellPos lastMove) {
+        int row = lastMove.row;
+        int col = lastMove.col;
+        char color = board[row][col];
         int horizontal = 1;
         int vertical = 1;
         int leftDiag = 1;
@@ -51,6 +35,7 @@ public class Game {
         return (horizontal == 5 || vertical == 5 || leftDiag == 5 || rightDiag == 5);
     }
 
+    // TODO: move this to CellPos class
     private int countInDirection(int startY, int startX, int changeX, int changeY, int limitX, int limitY, char color) {
         int x = startX + changeX;
         int y = startY + changeY;
@@ -85,5 +70,9 @@ public class Game {
         }
 
         return boardString.toString();
+    }
+
+    public void displayBoard() {
+        System.out.println(this.toString());
     }
 }
