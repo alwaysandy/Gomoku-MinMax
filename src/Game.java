@@ -36,34 +36,34 @@ public class Game {
         char color = board[lastMove[0]][lastMove[1]];
         int horizontal = 1;
         int vertical = 1;
-        int left_diag = 1;
-        int right_diag = 1;
+        int leftDiag = 1;
+        int rightDiag = 1;
 
-        horizontal += count_in_direction(row, col, 1, 0, 9, 10, color);
-        horizontal += count_in_direction(row, col, -1, 0, -1, 10, color);
-        vertical += count_in_direction(row, col,0, 1, 10, 9, color);
-        vertical += count_in_direction(row, col, 0, -1, 10, -1, color);
-        left_diag += count_in_direction(row, col, -1, -1, -1, -1, color);
-        left_diag += count_in_direction(row, col, 1, 1, 9, 9, color);
-        right_diag += count_in_direction(row, col, -1, 1, -1, 9, color);
-        right_diag += count_in_direction(row, col, 1, -1, 9, -1, color);
+        horizontal += countInDirection(row, col, 1, 0, 9, 10, color);
+        horizontal += countInDirection(row, col, -1, 0, -1, 10, color);
+        vertical += countInDirection(row, col,0, 1, 10, 9, color);
+        vertical += countInDirection(row, col, 0, -1, 10, -1, color);
+        leftDiag += countInDirection(row, col, -1, -1, -1, -1, color);
+        leftDiag += countInDirection(row, col, 1, 1, 9, 9, color);
+        rightDiag += countInDirection(row, col, -1, 1, -1, 9, color);
+        rightDiag += countInDirection(row, col, 1, -1, 9, -1, color);
 
-        return (horizontal == 5 || vertical == 5 || left_diag == 5 || right_diag == 5);
+        return (horizontal == 5 || vertical == 5 || leftDiag == 5 || rightDiag == 5);
     }
 
-    private int count_in_direction(int start_y, int start_x, int change_x, int change_y, int limit_x, int limit_y, char color) {
-        int x = start_x + change_x;
-        int y = start_y + change_y;
+    private int countInDirection(int startY, int startX, int changeX, int changeY, int limitX, int limitY, char color) {
+        int x = startX + changeX;
+        int y = startY + changeY;
         int count = 0;
-        while (x != limit_x && y != limit_y) {
+        while (x != limitX && y != limitY) {
             if (board[y][x] == color) {
                 count++;
             } else {
                 break;
             }
 
-            x += change_x;
-            y += change_y;
+            x += changeX;
+            y += changeY;
         }
 
         return count;
