@@ -17,7 +17,10 @@ public class Main {
                         "Multiplayer"
                 });
 
-        Game game = new Game(9);
+        int boardSize = 5;
+        int winningLength = 3;
+
+        Game game = new Game(boardSize, winningLength);
         Player[] players = new Player[2];
 
         char[] availableSymbols = new char[]{'B', 'W'};
@@ -30,15 +33,19 @@ public class Main {
                 ? new AIPlayer(remainingSymbols)
                 : new HumanPlayer(remainingSymbols);
 
-        int currentPlayer = 0;
+        int currentPlayer = players[0].getSymbol() == 'B' ? 0 : 1;
         while (true) {
             game.displayBoard();
             CellPos movePos = players[currentPlayer].makeMove(game);
             char moveSymbol = players[currentPlayer].getSymbol();
             game.setCell(movePos, moveSymbol);
-            boolean isWon = game.checkForWin(movePos);
-            if (isWon) {
+            if (game.checkForWin(movePos)) {
+                game.displayBoard();
                 System.out.println("Player " + players[currentPlayer].getName() + " won!");
+                break;
+            } else if (game.isDraw()) {
+                game.displayBoard();
+                System.out.println("Draw!");
                 break;
             }
             currentPlayer = (currentPlayer + 1) % 2;

@@ -3,9 +3,11 @@ package Game;
 public class Game {
     private char[][] board;
     private int size;
+    private int winningLength;
 
-    public Game(int size) {
+    public Game(int size, int winningLength) {
         this.size = size;
+        this.winningLength = winningLength;
         board = new char[size][size];
     }
 
@@ -34,7 +36,10 @@ public class Game {
         rightDiag += countInDirection(row, col, -1, 1, color);
         rightDiag += countInDirection(row, col, 1, -1, color);
 
-        return (horizontal == 5 || vertical == 5 || leftDiag == 5 || rightDiag == 5);
+        return (horizontal == winningLength ||
+                vertical == winningLength ||
+                leftDiag == winningLength ||
+                rightDiag == winningLength);
     }
 
     // TODO: move this to CellPos class
@@ -58,12 +63,18 @@ public class Game {
     @Override
     public String toString() {
         StringBuilder boardString = new StringBuilder();
+        boardString.append("  ");
         for (int i = 0; i < size; i++) {
+            boardString.append(i + " ");
+        }
+        boardString.append('\n');
+        for (int i = 0; i < size; i++) {
+            boardString.append(i + " ");
             for (int j = 0; j < size; j++) {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
-                    boardString.append('.');
+                    boardString.append(". ");
                 } else {
-                    boardString.append(board[i][j]);
+                    boardString.append(board[i][j] + " ");
                 }
             }
             boardString.append('\n');
@@ -87,7 +98,7 @@ public class Game {
     }
 
     public Game copy() {
-        Game copy = new Game(size);
+        Game copy = new Game(size, winningLength);
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 copy.setCell(new CellPos(i, j), board[i][j]);
@@ -102,5 +113,21 @@ public class Game {
 
     public boolean isValidAxis(int axisValue) {
         return axisValue >= 0 && axisValue < size;
+    }
+
+    public boolean isDraw() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (board[i][j] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public char getCell(CellPos pos) {
+        if (!isCorrectMove(pos)) return 0;
+        return board[pos.row][pos.col];
     }
 }

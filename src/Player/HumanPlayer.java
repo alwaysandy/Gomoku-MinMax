@@ -31,15 +31,14 @@ public class HumanPlayer extends Player {
 
 
     private int receiveMove(String axis, Game game) {
-        boolean valid = false;
-        int value = 0;
-        while (!valid) {
+        int value;
+        while (true) {
             try {
                 Scanner input = new Scanner(System.in);
                 System.out.print("Enter your " + axis + ": ");
                 value = input.nextInt();
                 if (game.isValidAxis(value)) {
-                    valid = true;
+                    return value;
                 } else {
                     System.out.println("Invalid " + axis + ". Please Enter your " + axis + ": ");
                 }
@@ -47,7 +46,6 @@ public class HumanPlayer extends Player {
                 System.out.println("Please Enter a valid number.");
             }
         }
-        return value;
     }
 
     @Override
