@@ -23,26 +23,48 @@ public class HumanPlayer extends Player{
         return availableSymbols[choice - 1];
     }
 
-    private CellPos readMove(Scanner scanner) {
-        System.out.print("Enter your row: ");
-        int row = scanner.nextInt();
-        System.out.print("Enter your column: ");
-        int col = scanner.nextInt();
-        System.out.println();
+    private CellPos readMove() {
+
+       int row = receiveMove("row");
+       int col = receiveMove("col");
         return new CellPos(row, col);
+    }
+
+
+    private int receiveMove(String index){
+        boolean valid = false;
+        int value = 0;
+        while (!valid) {
+            try {
+                Scanner input = new Scanner(System.in);
+                System.out.print("Enter your " + index + ": ");
+                value = input.nextInt();
+                if (validateMove(value)) {
+                    valid = true;
+                }
+                else {
+                    System.out.println("Please Enter a valid " + index + ": ");
+                }
+            }catch (Exception e) {
+                System.out.println("Please Enter a valid " + index + ": ");
+            }
+        }
+        return value;
+    }
+    private boolean validateMove(int input){
+        return input > -1;
     }
 
     @Override
     public CellPos makeMove(Game game) {
-        Scanner scanner = new Scanner(System.in);
-        CellPos pos = readMove(scanner);
+        CellPos pos = readMove();
         while (!game.isCorrectMove(pos)) {
             System.out.println("Invalid move, try again");
-            pos = readMove(scanner);
+            pos = readMove();
         }
         while (!game.isCellEmpty(pos)) {
             System.out.println("Cell is not empty, try again");
-            pos = readMove(scanner);
+            pos = readMove();
         }
         return pos;
     }
