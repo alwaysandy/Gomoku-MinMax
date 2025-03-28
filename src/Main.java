@@ -7,29 +7,6 @@ import Utils.Input;
 
 public class Main {
     public static void main(String[] args) {
-//        System.out.println("Hello, World!");
-//        Terminal.clearScreen();
-////        System.out.println(Terminal.getInt());
-////        System.out.println(Terminal.getColour());
-//
-//        Game.Game game = new Game.Game();
-//
-//        game.makeMove(0, 0);
-//        game.makeMove(1, 0);
-//        game.makeMove(0, 1);
-//        game.makeMove(1, 1);
-//        game.makeMove(0, 2);
-//        game.makeMove(1, 2);
-//        game.makeMove(0, 3);
-//        game.makeMove(1, 3);
-//        System.out.println(game.checkForWin());
-//        game.makeMove(0, 4);
-//        System.out.println(game.checkForWin());
-//        game.makeMove(1, 4);
-//        System.out.println(game.checkForWin());
-////        System.out.println(game.toString());
-
-
         System.out.println("Welcome to Gumoku!");
         System.out.println("This is a game where you have to connect 5 of your symbols in a row, column, or diagonal.");
 
@@ -44,9 +21,11 @@ public class Main {
         Player[] players = new Player[2];
 
         char[] availableSymbols = new char[]{'B', 'W'};
+        System.out.println("=== Player 1 ===");
         players[0] = new HumanPlayer(availableSymbols);
 
         char[] remainingSymbols = new char[]{ players[0].getOpponentSymbol() };
+        if (modeChoice == 2) System.out.println("=== Player 2 ===");
         players[1] = modeChoice == 1
                 ? new AIPlayer(remainingSymbols)
                 : new HumanPlayer(remainingSymbols);

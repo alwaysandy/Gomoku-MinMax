@@ -75,4 +75,15 @@ public class Game {
     public void displayBoard() {
         System.out.println(this.toString());
     }
+
+    public boolean isCorrectMove(CellPos pos) {
+        return pos.row >= 0 &&
+                pos.row < 9 &&
+                pos.col >= 0 &&
+                pos.col < 9;
+    }
+
+    public boolean isCellEmpty(CellPos pos) {
+        return board[pos.row][pos.col] == 0;
+    }
 }
