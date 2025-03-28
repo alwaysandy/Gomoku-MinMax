@@ -6,7 +6,7 @@ import Utils.Input;
 
 import java.util.Scanner;
 
-public class HumanPlayer extends Player{
+public class HumanPlayer extends Player {
     public HumanPlayer(char[] availableSymbols) {
         super(availableSymbols);
     }
@@ -23,48 +23,39 @@ public class HumanPlayer extends Player{
         return availableSymbols[choice - 1];
     }
 
-    private CellPos readMove() {
-
-       int row = receiveMove("row");
-       int col = receiveMove("col");
+    private CellPos readMove(Game game) {
+        int row = receiveMove("row", game);
+        int col = receiveMove("col", game);
         return new CellPos(row, col);
     }
 
 
-    private int receiveMove(String index){
+    private int receiveMove(String axis, Game game) {
         boolean valid = false;
         int value = 0;
         while (!valid) {
             try {
                 Scanner input = new Scanner(System.in);
-                System.out.print("Enter your " + index + ": ");
+                System.out.print("Enter your " + axis + ": ");
                 value = input.nextInt();
-                if (validateMove(value)) {
+                if (game.isValidAxis(value)) {
                     valid = true;
+                } else {
+                    System.out.println("Invalid " + axis + ". Please Enter your " + axis + ": ");
                 }
-                else {
-                    System.out.println("Please Enter a valid " + index + ": ");
-                }
-            }catch (Exception e) {
-                System.out.println("Please Enter a valid " + index + ": ");
+            } catch (Exception e) {
+                System.out.println("Please Enter a valid number.");
             }
         }
         return value;
     }
-    private boolean validateMove(int input){
-        return input > -1;
-    }
 
     @Override
     public CellPos makeMove(Game game) {
-        CellPos pos = readMove();
-        while (!game.isCorrectMove(pos)) {
-            System.out.println("Invalid move, try again");
-            pos = readMove();
-        }
+        CellPos pos = readMove(game);
         while (!game.isCellEmpty(pos)) {
             System.out.println("Cell is not empty, try again");
-            pos = readMove();
+            pos = readMove(game);
         }
         return pos;
     }

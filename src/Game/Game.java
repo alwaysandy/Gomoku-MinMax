@@ -1,12 +1,11 @@
 package Game;
 
-import java.util.function.Function;
-
 public class Game {
     private char[][] board;
     private int size;
 
     public Game(int size) {
+        this.size = size;
         board = new char[size][size];
     }
 
@@ -26,30 +25,29 @@ public class Game {
         int leftDiag = 1;
         int rightDiag = 1;
 
-        horizontal += countInDirection(row, col, 1, 0, size, 10, color);
-        horizontal += countInDirection(row, col, -1, 0, -1, 10, color);
-        vertical += countInDirection(row, col, 0, 1, 10, size, color);
-        vertical += countInDirection(row, col, 0, -1, 10, -1, color);
-        leftDiag += countInDirection(row, col, -1, -1, -1, -1, color);
-        leftDiag += countInDirection(row, col, 1, 1, size, size, color);
-        rightDiag += countInDirection(row, col, -1, 1, -1, size, color);
-        rightDiag += countInDirection(row, col, 1, -1, size, -1, color);
+        horizontal += countInDirection(row, col, 1, 0, color);
+        horizontal += countInDirection(row, col, -1, 0, color);
+        vertical += countInDirection(row, col, 0, 1, color);
+        vertical += countInDirection(row, col, 0, -1, color);
+        leftDiag += countInDirection(row, col, -1, -1, color);
+        leftDiag += countInDirection(row, col, 1, 1, color);
+        rightDiag += countInDirection(row, col, -1, 1, color);
+        rightDiag += countInDirection(row, col, 1, -1, color);
 
         return (horizontal == 5 || vertical == 5 || leftDiag == 5 || rightDiag == 5);
     }
 
     // TODO: move this to CellPos class
-    private int countInDirection(int startY, int startX, int changeX, int changeY, int limitX, int limitY, char color) {
+    private int countInDirection(int startY, int startX, int changeX, int changeY, char color) {
         int x = startX + changeX;
         int y = startY + changeY;
         int count = 0;
-        while (x != limitX && y != limitY) {
+        while (isValidAxis(x) && isValidAxis(y)) {
             if (board[y][x] == color) {
                 count++;
             } else {
                 break;
             }
-
             x += changeX;
             y += changeY;
         }
@@ -100,5 +98,9 @@ public class Game {
 
     public int getSize() {
         return size;
+    }
+
+    public boolean isValidAxis(int axisValue) {
+        return axisValue >= 0 && axisValue < size;
     }
 }

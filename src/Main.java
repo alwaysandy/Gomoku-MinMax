@@ -17,7 +17,7 @@ public class Main {
                         "Multiplayer"
                 });
 
-        Game game = new Game();
+        Game game = new Game(9);
         Player[] players = new Player[2];
 
         char[] availableSymbols = new char[]{'B', 'W'};
