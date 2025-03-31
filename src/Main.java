@@ -46,7 +46,7 @@ public class Main {
             CellPos movePos = currentPlayer.makeMove(game);
             game.setCell(movePos, currentPlayer.getSymbol());
 
-            if (game.checkForWin(movePos)) {
+            if (game.checkForTermination(movePos)) {
                 game.displayBoard();
                 System.out.println("Player " + currentPlayer.getName() + " won!");
                 break;

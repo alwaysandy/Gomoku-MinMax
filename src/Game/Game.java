@@ -18,23 +18,22 @@ public class Game {
         return true;
     }
 
-    public boolean checkForWin(CellPos lastMove) {
-        int row = lastMove.row;
-        int col = lastMove.col;
-        char color = board[row][col];
+    public boolean checkForTermination(CellPos lastMove) {
+        char color = board[lastMove.row][lastMove.col];
+
         int horizontal = 1;
         int vertical = 1;
         int leftDiag = 1;
         int rightDiag = 1;
 
-        horizontal += countInDirection(row, col, 1, 0, color);
-        horizontal += countInDirection(row, col, -1, 0, color);
-        vertical += countInDirection(row, col, 0, 1, color);
-        vertical += countInDirection(row, col, 0, -1, color);
-        leftDiag += countInDirection(row, col, -1, -1, color);
-        leftDiag += countInDirection(row, col, 1, 1, color);
-        rightDiag += countInDirection(row, col, -1, 1, color);
-        rightDiag += countInDirection(row, col, 1, -1, color);
+        horizontal += countInDirection(lastMove, CellPos.Left(), color);
+        horizontal += countInDirection(lastMove, CellPos.Right(), color);
+        vertical += countInDirection(lastMove, CellPos.Up(), color);
+        vertical += countInDirection(lastMove, CellPos.Down(), color);
+        leftDiag += countInDirection(lastMove, CellPos.UpLeft(), color);
+        leftDiag += countInDirection(lastMove, CellPos.DownRight(), color);
+        rightDiag += countInDirection(lastMove, CellPos.UpRight(), color);
+        rightDiag += countInDirection(lastMove, CellPos.DownLeft(), color);
 
         return (horizontal == winningLength ||
                 vertical == winningLength ||
@@ -42,21 +41,14 @@ public class Game {
                 rightDiag == winningLength);
     }
 
-    // TODO: move this to CellPos class
-    private int countInDirection(int startY, int startX, int changeX, int changeY, char color) {
-        int x = startX + changeX;
-        int y = startY + changeY;
+    private int countInDirection(CellPos startPos, CellPos direction, char color) {
+        CellPos currentPos = startPos.add(direction);
         int count = 0;
-        while (isValidAxis(x) && isValidAxis(y)) {
-            if (board[y][x] == color) {
-                count++;
-            } else {
-                break;
-            }
-            x += changeX;
-            y += changeY;
+        while (isValidAxis(currentPos.row) && isValidAxis(currentPos.col)) {
+            if (getCell(currentPos) == color) count++;
+            else break;
+            currentPos = currentPos.add(direction);
         }
-
         return count;
     }
 

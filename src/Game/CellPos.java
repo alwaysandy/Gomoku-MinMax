@@ -8,4 +8,40 @@ public class CellPos {
         this.row = row;
         this.col = col;
     }
+
+    public CellPos add(CellPos other) {
+        return new CellPos(this.row + other.row, this.col + other.col);
+    }
+
+    public static CellPos Left() {
+        return new CellPos(0, -1);
+    }
+
+    public static CellPos Right() {
+        return new CellPos(0, 1);
+    }
+
+    public static CellPos Up() {
+        return new CellPos(-1, 0);
+    }
+
+    public static CellPos Down() {
+        return new CellPos(1, 0);
+    }
+
+    public static CellPos UpLeft() {
+        return new CellPos(-1, -1);
+    }
+
+    public static CellPos UpRight() {
+        return new CellPos(-1, 1);
+    }
+
+    public static CellPos DownLeft() {
+        return new CellPos(1, -1);
+    }
+
+    public static CellPos DownRight() {
+        return new CellPos(1, 1);
+    }
 }
