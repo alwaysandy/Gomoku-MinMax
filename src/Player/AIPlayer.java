@@ -4,8 +4,8 @@ import Game.Game;
 import Game.CellPos;
 
 public class AIPlayer extends Player{
-    public AIPlayer(char[] availableSymbols) {
-        super(availableSymbols);
+    public AIPlayer(char[] availableColors) {
+        super(availableColors);
     }
 
     @Override
@@ -20,8 +20,8 @@ public class AIPlayer extends Player{
     }
 
     @Override
-    protected char initializeSymbol(char[] availableSymbols) {
-        return availableSymbols[0];
+    protected char initializeColor(char[] availableColors) {
+        return availableColors[0];
     }
 
     @Override

@@ -7,8 +7,8 @@ import Utils.Input;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {
-    public HumanPlayer(char[] availableSymbols) {
-        super(availableSymbols);
+    public HumanPlayer(char[] availableColors) {
+        super(availableColors);
     }
 
     @Override
@@ -17,16 +17,16 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    protected char initializeSymbol(char[] availableSymbols) {
-        if (availableSymbols.length == 1) return availableSymbols[0];
-        String[] symbolOptions = Input.makeOptionsFromChars(availableSymbols);
-        int choice = Input.readChoice("Choose your symbol: ", symbolOptions);
-        return availableSymbols[choice - 1];
+    protected char initializeColor(char[] availableColors) {
+        if (availableColors.length == 1) return availableColors[0];
+        String[] colorOptions = Input.makeOptionsFromChars(availableColors);
+        int choice = Input.readChoice("Choose your color: ", colorOptions);
+        return availableColors[choice - 1];
     }
 
     @Override
     public void displayTurnIndicator() {
-        System.out.println("Player " + this.getName() + " (" + this.getSymbol() + ")" + "'s turn");
+        System.out.println("Player " + this.getName() + " (" + this.getColor() + ")" + "'s turn");
     }
 
     private CellPos readMove(Game game) {

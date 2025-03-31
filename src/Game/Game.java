@@ -11,10 +11,10 @@ public class Game {
         board = new char[size][size];
     }
 
-    public boolean setCell(CellPos pos, char symbol) {
+    public boolean setCell(CellPos pos, char color) {
         if (pos.row < 0 || pos.row >= size || pos.col < 0 || pos.col >= size) return false;
         if (board[pos.row][pos.col] != 0) return false;
-        board[pos.row][pos.col] = symbol;
+        board[pos.row][pos.col] = color;
         return true;
     }
 

@@ -5,19 +5,19 @@ import Game.CellPos;
 
 public abstract class Player {
     private String name;
-    private char symbol;
+    private char color;
 
-    protected Player(char[] availableSymbols) {
+    protected Player(char[] availableColors) {
         this.name = this.initializeName();
-        this.symbol = this.initializeSymbol(availableSymbols);
+        this.color = this.initializeColor(availableColors);
     }
 
     abstract protected String initializeName();
-    abstract protected char initializeSymbol(char[] availableSymbols);
+    abstract protected char initializeColor(char[] availableColors);
     abstract public CellPos makeMove(Game game);
     abstract public void displayTurnIndicator();
 
     public String getName() { return name; }
-    public char getSymbol() { return symbol; }
-    public char getOpponentSymbol() { return symbol == 'B' ? 'W' : 'B'; }
+    public char getColor() { return color; }
+    public char getOpponentColor() { return color == 'B' ? 'W' : 'B'; }
 }
