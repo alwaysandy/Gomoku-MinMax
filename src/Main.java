@@ -17,7 +17,7 @@ public class Main {
                         "Multiplayer"
                 });
 
-        int boardSize = 5;
+        int boardSize = 3;
         int winningLength = 3;
 
         Game game = new Game(boardSize, winningLength);
@@ -36,6 +36,7 @@ public class Main {
         int currentPlayer = players[0].getSymbol() == 'B' ? 0 : 1;
         while (true) {
             game.displayBoard();
+            System.out.println(players[currentPlayer].getName() + "(" + players[currentPlayer].getSymbol() + ")'s turn");
             CellPos movePos = players[currentPlayer].makeMove(game);
             char moveSymbol = players[currentPlayer].getSymbol();
             game.setCell(movePos, moveSymbol);

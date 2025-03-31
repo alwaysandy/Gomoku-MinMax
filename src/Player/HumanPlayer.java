@@ -18,6 +18,7 @@ public class HumanPlayer extends Player {
 
     @Override
     protected char initializeSymbol(char[] availableSymbols) {
+        if (availableSymbols.length == 1) return availableSymbols[0];
         String[] symbolOptions = Input.makeOptionsFromChars(availableSymbols);
         int choice = Input.readChoice("Choose your symbol: ", symbolOptions);
         return availableSymbols[choice - 1];
