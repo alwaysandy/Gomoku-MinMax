@@ -14,13 +14,18 @@ public class AIPlayer extends Player{
     }
 
     @Override
+    public void displayTurnIndicator() {
+        System.out.println("AI's turn");
+        System.out.println("Calculating...");
+    }
+
+    @Override
     protected char initializeSymbol(char[] availableSymbols) {
         return availableSymbols[0];
     }
 
     @Override
     public CellPos makeMove(Game game) {
-        System.out.println("AI is making a move...");
         return new CellPos(0,0);
     }
 }

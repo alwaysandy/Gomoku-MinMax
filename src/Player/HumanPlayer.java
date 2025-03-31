@@ -24,6 +24,11 @@ public class HumanPlayer extends Player {
         return availableSymbols[choice - 1];
     }
 
+    @Override
+    public void displayTurnIndicator() {
+        System.out.println("Player " + this.getName() + " (" + this.getSymbol() + ")" + "'s turn");
+    }
+
     private CellPos readMove(Game game) {
         int row = receiveMove("row", game);
         int col = receiveMove("col", game);

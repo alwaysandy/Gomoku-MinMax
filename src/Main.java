@@ -23,33 +23,42 @@ public class Main {
         Game game = new Game(boardSize, winningLength);
         Player[] players = new Player[2];
 
-        char[] availableSymbols = new char[]{'B', 'W'};
+        char[] availableSymbols = new char[]{ 'B', 'W' };
         System.out.println("=== Player 1 ===");
         players[0] = new HumanPlayer(availableSymbols);
 
         char[] remainingSymbols = new char[]{ players[0].getOpponentSymbol() };
-        if (modeChoice == 2) System.out.println("=== Player 2 ===");
-        players[1] = modeChoice == 1
-                ? new AIPlayer(remainingSymbols)
-                : new HumanPlayer(remainingSymbols);
+        if (modeChoice == 1) {
+            players[1] = new AIPlayer(remainingSymbols);
+        } else if (modeChoice == 2) {
+            System.out.println("=== Player 2 ===");
+            players[1] = new HumanPlayer(remainingSymbols);
+        }
 
-        int currentPlayer = players[0].getSymbol() == 'B' ? 0 : 1;
+        // Player with Black piece starts first
+        int currentPlayerIndex = players[0].getSymbol() == 'B' ? 0 : 1;
+
         while (true) {
+            Player currentPlayer = players[currentPlayerIndex];
+
             game.displayBoard();
-            System.out.println(players[currentPlayer].getName() + "(" + players[currentPlayer].getSymbol() + ")'s turn");
-            CellPos movePos = players[currentPlayer].makeMove(game);
-            char moveSymbol = players[currentPlayer].getSymbol();
-            game.setCell(movePos, moveSymbol);
+            currentPlayer.displayTurnIndicator();
+            CellPos movePos = currentPlayer.makeMove(game);
+            game.setCell(movePos, currentPlayer.getSymbol());
+
             if (game.checkForWin(movePos)) {
                 game.displayBoard();
-                System.out.println("Player " + players[currentPlayer].getName() + " won!");
+                System.out.println("Player " + currentPlayer.getName() + " won!");
                 break;
-            } else if (game.isDraw()) {
+            }
+
+            if (game.isDraw()) {
                 game.displayBoard();
                 System.out.println("Draw!");
                 break;
             }
-            currentPlayer = (currentPlayer + 1) % 2;
+
+            currentPlayerIndex = (currentPlayerIndex + 1) % 2;
         }
     }
 }

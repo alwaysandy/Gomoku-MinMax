@@ -15,6 +15,7 @@ public abstract class Player {
     abstract protected String initializeName();
     abstract protected char initializeSymbol(char[] availableSymbols);
     abstract public CellPos makeMove(Game game);
+    abstract public void displayTurnIndicator();
 
     public String getName() { return name; }
     public char getSymbol() { return symbol; }
