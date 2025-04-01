@@ -57,8 +57,9 @@ public class Game {
         CellPos currentPos = startPos.add(direction);
         int count = 0;
         while (isValidAxis(currentPos.row) && isValidAxis(currentPos.col)) {
-            if (getCell(currentPos) != color) break;
+            if (getCell(currentPos) != 0 && getCell(currentPos) != color) break;
             currentPos = currentPos.add(direction);
+            count += 1;
         }
         return count;
     }
@@ -135,16 +136,15 @@ public class Game {
         return board[pos.row][pos.col];
     }
 
-    private int evaluateScore() {
+    public int evaluateScore() {
         int blackScore = getBestScore('B');
         int whiteScore = getBestScore('W');
-
         return blackScore - whiteScore;
     }
 
     private int getBestScore(char color) {
         int openMultiplier = 2;
-        int score = Integer.MIN_VALUE;
+        int score = 1;
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 CellPos curr = new CellPos(row, col);
@@ -152,8 +152,9 @@ public class Game {
                     continue;
                 }
 
-                int valid_right = countPossibleInDirection(curr, CellPos.Left(), color);
-                int valid_left = countPossibleInDirection(curr, CellPos.Right(), color);
+                int valid_left = countPossibleInDirection(curr, CellPos.Left(), color);
+                int valid_right = countPossibleInDirection(curr, CellPos.Right(), color);
+
                 if (valid_left + valid_right >= 4) {
                     int left = countInDirection(curr, CellPos.Left(), color);
                     boolean left_open = isValidAxis(row - left - 1) &&
@@ -161,13 +162,17 @@ public class Game {
                     int right = countInDirection(curr, CellPos.Right(), color);
                     boolean right_open = isValidAxis(row + right + 1) && this.isCellEmpty(new CellPos(row + right + 1, col));
 
+                    if (left + right == 4) {
+                        return Integer.MAX_VALUE;
+                    }
+
                     if (left_open && right_open) {
                         if (left + right < 5) {
-                            score = Math.max(score, ((left +right) ^ openMultiplier) * 2);
+                            score = Math.max(score, (2 * (left + right)) * openMultiplier);
                         }
                     } else if (left_open || right_open) {
                         if (left + right < 5) {
-                            score = Math.max(score, ((left +right) ^ openMultiplier));
+                            score = Math.max(score, 2 * (left +right));
                         }
                     }
                 }
@@ -183,13 +188,17 @@ public class Game {
                     boolean down_open = isValidAxis(row + down + 1) &&
                             this.isCellEmpty(new CellPos(row + down + 1, col));
 
+                    if (up + down == 4) {
+                        return Integer.MAX_VALUE;
+                    }
+
                     if (up_open && down_open) {
                         if (up + down < 5) {
-                            score = Math.max(score, ((up + down) * openMultiplier) * 2);
+                            score = Math.max(score, (2 * (up + down)) * openMultiplier);
                         }
                     } else if (up_open || down_open) {
                         if (up + down < 5) {
-                            score = Math.max(score, ((up + down) * openMultiplier));
+                            score = Math.max(score, 2 * (up + down));
                         }
                     }
                 }
@@ -206,13 +215,17 @@ public class Game {
                     boolean downRight_open = isValidAxis(row + downRight + 1) && isValidAxis(col + downRight + 1) &&
                             this.isCellEmpty(new CellPos(row + downRight + 1, col + downRight + 1));
 
+                    if (upLeft + downRight == 4) {
+                        return Integer.MAX_VALUE;
+                    }
+
                     if (upLeft_open && downRight_open) {
                         if (upLeft + downRight < 5) {
-                            score = Math.max(score, ((upLeft + downRight) * openMultiplier) * 2);
+                            score = Math.max(score, 2 * (upLeft + downRight) * openMultiplier);
                         }
                     } else if (upLeft_open || downRight_open) {
                         if (upLeft + downRight < 5) {
-                            score = Math.max(score, ((upLeft + downRight) * openMultiplier));
+                            score = Math.max(score, 2 * (upLeft + downRight));
                         }
                     }
                 }
@@ -229,13 +242,17 @@ public class Game {
                     boolean downLeft_open = isValidAxis(row + downLeft + 1) && isValidAxis(col - downLeft - 1) &&
                             this.isCellEmpty(new CellPos(row + downLeft + 1, col - downLeft - 1));
 
+                    if (upRight + downLeft == 4) {
+                        return Integer.MAX_VALUE;
+                    }
+
                     if (upRight_open && downLeft_open) {
                         if (upRight + downLeft < 5) {
-                            score = Math.max(score, ((upRight + downLeft) * openMultiplier) * 2);
+                            score = Math.max(score, 2 * (upRight + downLeft) * openMultiplier);
                         }
                     } else if (upRight_open || downLeft_open) {
                         if (upRight + downLeft < 5) {
-                            score = Math.max(score, ((upRight + downLeft) * openMultiplier));
+                            score = Math.max(score, 2 * (upRight + downLeft));
                         }
                     }
                 }

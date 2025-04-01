@@ -17,8 +17,8 @@ public class Main {
                         "Multiplayer"
                 });
 
-        int boardSize = 3;
-        int winningLength = 3;
+        int boardSize = 9;
+        int winningLength = 5;
 
         Game game = new Game(boardSize, winningLength);
         Player[] players = new Player[2];
@@ -42,6 +42,7 @@ public class Main {
             Player currentPlayer = players[currentPlayerIndex];
 
             game.displayBoard();
+            System.out.println(game.evaluateScore());
             currentPlayer.displayTurnIndicator();
             CellPos movePos = currentPlayer.makeMove(game);
             game.setCell(movePos, currentPlayer.getColor());
