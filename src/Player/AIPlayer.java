@@ -28,4 +28,10 @@ public class AIPlayer extends Player{
     public CellPos makeMove(Game game) {
         return new CellPos(0,0);
     }
+
+    private CellPos minimax() {
+        char color = this.getColor();
+
+        return new CellPos(0, 0);
+    }
 }
