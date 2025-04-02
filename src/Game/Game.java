@@ -139,7 +139,7 @@ public class Game {
     public int evaluateScore() {
         int blackScore = getBestScore('B');
         int whiteScore = getBestScore('W');
-        return whiteScore - blackScore;
+        return blackScore - whiteScore;
     }
 
     private int getBestScore(char color) {
@@ -165,16 +165,16 @@ public class Game {
                             this.isCellEmpty(new CellPos(row, col + right + 1));
 
                     if (left + right == 4) {
-                        return Integer.MAX_VALUE;
+                        return 1000;
                     }
 
                     if (left_open && right_open) {
                         if (left + right < 5) {
-                            score = Math.max(score, (2 * (left + right)) * openMultiplier);
+                            score = Math.max(score, (int) Math.pow(left + right, 2) * openMultiplier);
                         }
                     } else if (left_open || right_open) {
                         if (left + right < 5) {
-                            score = Math.max(score, 2 * (left + right));
+                            score = Math.max(score, (int) Math.pow(left + right, 2));
                         }
                     }
                 }
@@ -190,16 +190,16 @@ public class Game {
                             this.isCellEmpty(new CellPos(row + down + 1, col));
 
                     if (up + down == 4) {
-                        return Integer.MAX_VALUE;
+                        return 1000;
                     }
 
                     if (up_open && down_open) {
                         if (up + down < 5) {
-                            score = Math.max(score, (2 * (up + down)) * openMultiplier);
+                            score = Math.max(score, (int) Math.pow(up + down, 2) * openMultiplier);
                         }
                     } else if (up_open || down_open) {
                         if (up + down < 5) {
-                            score = Math.max(score, 2 * (up + down));
+                            score = Math.max(score, (int) Math.pow(up + down, 2));
                         }
                     }
                 }
@@ -217,16 +217,16 @@ public class Game {
                             this.isCellEmpty(new CellPos(row + downRight + 1, col + downRight + 1));
 
                     if (upLeft + downRight == 4) {
-                        return Integer.MAX_VALUE;
+                        return 1000;
                     }
 
                     if (upLeft_open && downRight_open) {
                         if (upLeft + downRight < 5) {
-                            score = Math.max(score, 2 * (upLeft + downRight) * openMultiplier);
+                            score = Math.max(score, (int) Math.pow(upLeft + downRight, 2) * openMultiplier);
                         }
                     } else if (upLeft_open || downRight_open) {
                         if (upLeft + downRight < 5) {
-                            score = Math.max(score, 2 * (upLeft + downRight));
+                            score = Math.max(score, (int) Math.pow(upLeft + downRight, 2));
                         }
                     }
                 }
@@ -244,16 +244,16 @@ public class Game {
                             this.isCellEmpty(new CellPos(row + downLeft + 1, col - downLeft - 1));
 
                     if (upRight + downLeft == 4) {
-                        return Integer.MAX_VALUE;
+                        return 1000;
                     }
 
                     if (upRight_open && downLeft_open) {
                         if (upRight + downLeft < 5) {
-                            score = Math.max(score, 2 * (upRight + downLeft) * openMultiplier);
+                            score = Math.max(score, (int) Math.pow(upRight + downLeft, 2) * openMultiplier);
                         }
                     } else if (upRight_open || downLeft_open) {
                         if (upRight + downLeft < 5) {
-                            score = Math.max(score, 2 * (upRight + downLeft));
+                            score = Math.max(score, (int) Math.pow(upRight + downLeft, 2));
                         }
                     }
                 }
