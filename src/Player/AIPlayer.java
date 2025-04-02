@@ -40,7 +40,7 @@ public class AIPlayer extends Player{
                     return pos;
                 }
 
-                boolean maximizing = aiColour != 'B';
+                boolean maximizing = aiColour == 'W';
                 int score = miniMax(pos, game, 3, maximizing, playerColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 game.clearCell(pos);
 
@@ -81,7 +81,7 @@ public class AIPlayer extends Player{
                     }
 
                     maxScore = Math.max(maxScore, score);
-                    alpha = Math.max(score, alpha);
+                    alpha = Math.max(maxScore, alpha);
                 }
 
             }
@@ -99,7 +99,7 @@ public class AIPlayer extends Player{
                         return score;
                     }
                     minScore = Math.min(minScore, score);
-                    beta = Math.min(beta, score);
+                    beta = Math.min(beta, minScore);
                 }
             }
             return minScore;
