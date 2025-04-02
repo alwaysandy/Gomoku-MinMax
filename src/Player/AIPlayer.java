@@ -35,12 +35,12 @@ public class AIPlayer extends Player{
             for (int j = 0; j < game.getSize(); j++) {
                 CellPos pos = new CellPos(i, j);
                 if (!game.isCellEmpty(pos)) continue;
-                Game copy = game.copy();    // attempt the move
-                copy.setCell(pos, this.getColor());
-                if (copy.checkForTermination(pos)){ // return early
+                game.setCell(pos, this.getColor());
+                if (game.checkForTermination(pos)){ // return early
                     return pos;
                 }
-                int score = miniMax(pos, copy, 3, false, playerColour, aiColour);
+                int score = miniMax(pos, game, 3, false, playerColour, aiColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                game.clearCell(pos);
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = pos;
@@ -50,7 +50,7 @@ public class AIPlayer extends Player{
         return bestMove;
     }
 
-    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, char aiColour) {
+    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, char aiColour, int alpha, int beta) {
         if (game.isDraw()) return 0;
         if (game.checkForTermination(previousMove)) {
             char winner = game.getCell(previousMove);   // switched to ternary, and switched to values instead of just constants for the winner value
@@ -69,12 +69,17 @@ public class AIPlayer extends Player{
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
-                    Game nextState = game.copy();
-                    nextState.setCell(pos, currentColour);
+                    game.setCell(pos, currentColour);
+                    int score = miniMax(pos, game, depth - 1, false, nextColour, aiColour, alpha, beta);
+                    game.clearCell(pos);
+                    if (score > beta) {
+                        return score;
+                    }
 
-                    int score = miniMax(pos, nextState, depth - 1, false, nextColour, aiColour);
                     maxScore = Math.max(maxScore, score);
+                    alpha = Math.max(score, alpha);
                 }
+
             }
             return maxScore;
         } else {
@@ -83,11 +88,14 @@ public class AIPlayer extends Player{
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
-                    Game nextState = game.copy();
-                    nextState.setCell(pos, currentColour);
-
-                    int score = miniMax(pos, nextState, depth - 1, true, nextColour, aiColour);
+                    game.setCell(pos, currentColour);
+                    int score = miniMax(pos, game, depth - 1, true, nextColour, aiColour, alpha, beta);
+                    game.clearCell(pos);
+                    if (score < alpha) {
+                        return score;
+                    }
                     minScore = Math.min(minScore, score);
+                    beta = Math.min(beta, score);
                 }
             }
             return minScore;
