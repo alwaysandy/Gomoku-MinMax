@@ -40,7 +40,7 @@ public class AIPlayer extends Player{
                     return pos;
                 }
 
-                boolean maximizing = aiColour == 'W';
+                boolean maximizing = playerColour == 'B';
                 int score = miniMax(pos, game, 3, maximizing, playerColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 game.clearCell(pos);
 
@@ -68,41 +68,39 @@ public class AIPlayer extends Player{
         char nextColour = (currentColour == 'B') ? 'W' : 'B';
 
         if (isMaximizing) {
-            int maxScore = Integer.MIN_VALUE;
+            int score = Integer.MIN_VALUE;
             for (int i = 0; i < game.getSize(); i++) {
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
                     game.setCell(pos, currentColour);
-                    int score = miniMax(pos, game, depth - 1, false, nextColour, alpha, beta);
+                    score = Math.max(score, miniMax(pos, game, depth - 1, false, nextColour, alpha, beta));
                     game.clearCell(pos);
                     if (score > beta) {
                         return score;
                     }
 
-                    maxScore = Math.max(maxScore, score);
-                    alpha = Math.max(maxScore, alpha);
+                    alpha = Math.max(score, alpha);
                 }
 
             }
-            return maxScore;
+            return score;
         } else {
-            int minScore = Integer.MAX_VALUE;
+            int score = Integer.MAX_VALUE;
             for (int i = 0; i < game.getSize(); i++) {
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
                     game.setCell(pos, currentColour);
-                    int score = miniMax(pos, game, depth - 1, true, nextColour, alpha, beta);
+                    score = Math.min(score, miniMax(pos, game, depth - 1, true, nextColour, alpha, beta));
                     game.clearCell(pos);
                     if (score < alpha) {
                         return score;
                     }
-                    minScore = Math.min(minScore, score);
-                    beta = Math.min(beta, minScore);
+                    beta = Math.min(beta, score);
                 }
             }
-            return minScore;
+            return score;
         }
     }
 }
