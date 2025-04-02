@@ -42,7 +42,6 @@ public class Main {
             Player currentPlayer = players[currentPlayerIndex];
 
             game.displayBoard();
-            System.out.println(game.evaluateScore());
             currentPlayer.displayTurnIndicator();
             CellPos movePos = currentPlayer.makeMove(game);
             game.setCell(movePos, currentPlayer.getColor());
