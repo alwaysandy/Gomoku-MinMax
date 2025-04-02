@@ -30,7 +30,7 @@ public class AIPlayer extends Player{
         CellPos bestMove = null;
         int bestScore = Integer.MIN_VALUE;
         char aiColour = this.getColor(); // replaced Andy's toggle with ternary below
-        char playerColour = (aiColour == 'W') ? 'B' : 'W';
+        char playerColour = (aiColour == 'B') ? 'W' : 'B';
         for (int i = 0; i < game.getSize(); i++) {  // search moves
             for (int j = 0; j < game.getSize(); j++) {
                 CellPos pos = new CellPos(i, j);
@@ -40,17 +40,7 @@ public class AIPlayer extends Player{
                 if (copy.checkForTermination(pos)){ // return early
                     return pos;
                 }
-                char nextColor;
-                boolean maximizing;
-                if (this.getColor() == 'W') {
-                    nextColor = 'B';
-                    maximizing = false;
-                } else {
-                    nextColor = 'W';
-                    maximizing = true;
-                }
-
-                int score = miniMax(pos, copy, 3, false, nextColor);
+                int score = miniMax(pos, copy, 3, false, playerColour, aiColour);
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = pos;
@@ -60,58 +50,51 @@ public class AIPlayer extends Player{
         return bestMove;
     }
 
-    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char color) {
+    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, char aiColour) {
         if (game.isDraw()) return 0;
         if (game.checkForTermination(previousMove)) {
-            if (game.getCell(previousMove) == 'B') {
-                return Integer.MAX_VALUE;
-            } else {
-                return Integer.MIN_VALUE;
-            }
+            char winner = game.getCell(previousMove);   // switched to ternary, and switched to values instead of just constants for the winner value
+            return winner == aiColour ? 1000 : -1000;
         }
 
         if (depth == 0) {
-            return game.evaluateScore();
+            return evaluatePos(game, aiColour);
         }
+
+        char nextColour = (currentColour == 'B') ? 'W' : 'B';
 
         if (isMaximizing) {
-            int score = Integer.MIN_VALUE;
+            int maxScore = Integer.MIN_VALUE;
             for (int i = 0; i < game.getSize(); i++) {
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
-                    Game copy = game.copy();
-                    copy.setCell(pos, color);
-                    char nextColor;
-                    if (color == 'W') {
-                        nextColor = 'B';
-                    } else {
-                        nextColor = 'W';
-                    }
-                    score = Math.max(score, miniMax(pos, copy, depth - 1, false, nextColor));
+                    Game nextState = game.copy();
+                    nextState.setCell(pos, currentColour);
+
+                    int score = miniMax(pos, nextState, depth - 1, false, nextColour, aiColour);
+                    maxScore = Math.max(maxScore, score);
                 }
             }
-
-            return score;
+            return maxScore;
         } else {
-            int score = Integer.MAX_VALUE;
+            int minScore = Integer.MAX_VALUE;
             for (int i = 0; i < game.getSize(); i++) {
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
-                    Game copy = game.copy();
-                    copy.setCell(pos, this.getColor());
-                    char nextColor;
-                    if (color == 'W') {
-                        nextColor = 'B';
-                    } else {
-                        nextColor = 'W';
-                    }
-                    score = Math.min(score, miniMax(pos, copy, depth - 1, true, nextColor));
+                    Game nextState = game.copy();
+                    nextState.setCell(pos, currentColour);
+
+                    int score = miniMax(pos, nextState, depth - 1, true, nextColour, aiColour);
+                    minScore = Math.min(minScore, score);
                 }
             }
-
-            return score;
+            return minScore;
         }
+    }
+    private int evaluatePos(Game game, char aiColour) { // negation in case the ai is playing the other colour
+        int score = game.evaluateScore();
+        return (aiColour == 'B') ? score : -score;
     }
 }

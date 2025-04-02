@@ -157,10 +157,12 @@ public class Game {
 
                 if (valid_left + valid_right >= 4) {
                     int left = countInDirection(curr, CellPos.Left(), color);
-                    boolean left_open = isValidAxis(row - left - 1) &&
-                            this.isCellEmpty(new CellPos(row - left - 1, col));
+                    boolean left_open = isValidAxis(col - left - 1) &&
+                            this.isCellEmpty(new CellPos(row, col - left - 1));
+
                     int right = countInDirection(curr, CellPos.Right(), color);
-                    boolean right_open = isValidAxis(row + right + 1) && this.isCellEmpty(new CellPos(row + right + 1, col));
+                    boolean right_open = isValidAxis(col + right + 1) &&
+                            this.isCellEmpty(new CellPos(row, col + right + 1));
 
                     if (left + right == 4) {
                         return Integer.MAX_VALUE;
@@ -172,11 +174,10 @@ public class Game {
                         }
                     } else if (left_open || right_open) {
                         if (left + right < 5) {
-                            score = Math.max(score, 2 * (left +right));
+                            score = Math.max(score, 2 * (left + right));
                         }
                     }
                 }
-
                 int valid_up = countPossibleInDirection(curr, CellPos.Up(), color);
                 int valid_down = countPossibleInDirection(curr, CellPos.Down(), color);
                 if (valid_up + valid_down >= 4) {
