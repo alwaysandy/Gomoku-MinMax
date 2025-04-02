@@ -39,8 +39,12 @@ public class AIPlayer extends Player{
                 if (game.checkForTermination(pos)){ // return early
                     return pos;
                 }
-                int score = miniMax(pos, game, 3, false, playerColour, aiColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+                boolean maximizing = aiColour != 'B';
+                int score = miniMax(pos, game, 3, maximizing, playerColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 game.clearCell(pos);
+
+                score = aiColour == 'B' ? score : -score;
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = pos;
@@ -50,15 +54,15 @@ public class AIPlayer extends Player{
         return bestMove;
     }
 
-    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, char aiColour, int alpha, int beta) {
+    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, int alpha, int beta) {
         if (game.isDraw()) return 0;
         if (game.checkForTermination(previousMove)) {
             char winner = game.getCell(previousMove);   // switched to ternary, and switched to values instead of just constants for the winner value
-            return winner == aiColour ? 1000 : -1000;
+            return winner == 'B' ? 1000 : -1000;
         }
 
         if (depth == 0) {
-            return evaluatePos(game, aiColour);
+            return game.evaluateScore();
         }
 
         char nextColour = (currentColour == 'B') ? 'W' : 'B';
@@ -70,7 +74,7 @@ public class AIPlayer extends Player{
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
                     game.setCell(pos, currentColour);
-                    int score = miniMax(pos, game, depth - 1, false, nextColour, aiColour, alpha, beta);
+                    int score = miniMax(pos, game, depth - 1, false, nextColour, alpha, beta);
                     game.clearCell(pos);
                     if (score > beta) {
                         return score;
@@ -89,7 +93,7 @@ public class AIPlayer extends Player{
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
                     game.setCell(pos, currentColour);
-                    int score = miniMax(pos, game, depth - 1, true, nextColour, aiColour, alpha, beta);
+                    int score = miniMax(pos, game, depth - 1, true, nextColour, alpha, beta);
                     game.clearCell(pos);
                     if (score < alpha) {
                         return score;
@@ -100,9 +104,5 @@ public class AIPlayer extends Player{
             }
             return minScore;
         }
-    }
-    private int evaluatePos(Game game, char aiColour) { // negation in case the ai is playing the other colour
-        int score = game.evaluateScore();
-        return (aiColour == 'B') ? score : -score;
     }
 }

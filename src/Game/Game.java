@@ -167,7 +167,6 @@ public class Game {
                         return 1000;
                     }
 
-
                     if (left + right < 5 && (left_open || right_open)) {
                         score = Math.max(score, (int) Math.pow(4, left + right + 1));
                         if (left_open && right_open) {
