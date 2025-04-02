@@ -163,10 +163,6 @@ public class Game {
                     boolean right_open = isValidAxis(col + right + 1) &&
                             this.isCellEmpty(new CellPos(row, col + right + 1));
 
-                    if (left + right == 4) {
-                        return 1000;
-                    }
-
                     if (left + right < 5 && (left_open || right_open)) {
                         score = Math.max(score, (int) Math.pow(4, left + right + 1));
                         if (left_open && right_open) {
@@ -184,10 +180,6 @@ public class Game {
                     int down = countInDirection(curr, CellPos.Down(), color);
                     boolean down_open = isValidAxis(row + down + 1) &&
                             this.isCellEmpty(new CellPos(row + down + 1, col));
-
-                    if (up + down == 4) {
-                        return 1000;
-                    }
 
                     if (up + down < 5 && (up_open || down_open)) {
                         score = Math.max(score, (int) Math.pow(4, up + down + 1));
@@ -209,10 +201,6 @@ public class Game {
                     boolean downRight_open = isValidAxis(row + downRight + 1) && isValidAxis(col + downRight + 1) &&
                             this.isCellEmpty(new CellPos(row + downRight + 1, col + downRight + 1));
 
-                    if (upLeft + downRight == 4) {
-                        return 1000;
-                    }
-
                     if (upLeft + downRight < 5 && (upLeft_open || downRight_open)) {
                         score = Math.max(score, (int) Math.pow(4, upLeft + downRight + 1));
                         if (upLeft_open && downRight_open) {
@@ -232,10 +220,6 @@ public class Game {
                     int downLeft = countInDirection(curr, CellPos.DownLeft(), color);
                     boolean downLeft_open = isValidAxis(row + downLeft + 1) && isValidAxis(col - downLeft - 1) &&
                             this.isCellEmpty(new CellPos(row + downLeft + 1, col - downLeft - 1));
-
-                    if (upRight + downLeft == 4) {
-                        return 1000;
-                    }
 
                     if (upRight + downLeft < 5 && (upRight_open || downLeft_open)) {
                         score = Math.max(score, (int) Math.pow(4, upRight + downLeft + 1));
