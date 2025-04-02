@@ -40,7 +40,7 @@ public class AIPlayer extends Player{
                 if (copy.checkForTermination(pos)){ // return early
                     return pos;
                 }
-                int score = miniMax(pos, copy, 3, false, playerColour, aiColour);
+                int score = miniMax(pos, copy, 3, false, playerColour, aiColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = pos;
@@ -50,7 +50,7 @@ public class AIPlayer extends Player{
         return bestMove;
     }
 
-    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, char aiColour) {
+    private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, char aiColour, int alpha, int beta) {
         if (game.isDraw()) return 0;
         if (game.checkForTermination(previousMove)) {
             char winner = game.getCell(previousMove);   // switched to ternary, and switched to values instead of just constants for the winner value
@@ -63,6 +63,7 @@ public class AIPlayer extends Player{
 
         char nextColour = (currentColour == 'B') ? 'W' : 'B';
 
+        boolean betabreak = false;
         if (isMaximizing) {
             int maxScore = Integer.MIN_VALUE;
             for (int i = 0; i < game.getSize(); i++) {
@@ -72,9 +73,15 @@ public class AIPlayer extends Player{
                     Game nextState = game.copy();
                     nextState.setCell(pos, currentColour);
 
-                    int score = miniMax(pos, nextState, depth - 1, false, nextColour, aiColour);
+                    int score = miniMax(pos, nextState, depth - 1, false, nextColour, aiColour, alpha, beta);
+                    if (score > beta) {
+                        return score;
+                    }
+
                     maxScore = Math.max(maxScore, score);
+                    alpha = Math.max(score, alpha);
                 }
+
             }
             return maxScore;
         } else {
@@ -86,8 +93,12 @@ public class AIPlayer extends Player{
                     Game nextState = game.copy();
                     nextState.setCell(pos, currentColour);
 
-                    int score = miniMax(pos, nextState, depth - 1, true, nextColour, aiColour);
+                    int score = miniMax(pos, nextState, depth - 1, true, nextColour, aiColour, alpha, beta);
+                    if (score < alpha) {
+                        return score;
+                    }
                     minScore = Math.min(minScore, score);
+                    beta = Math.min(beta, score);
                 }
             }
             return minScore;

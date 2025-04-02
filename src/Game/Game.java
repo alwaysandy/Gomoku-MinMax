@@ -168,13 +168,11 @@ public class Game {
                         return 1000;
                     }
 
-                    if (left_open && right_open) {
-                        if (left + right < 5) {
-                            score = Math.max(score, (int) Math.pow(left + right, 2) * openMultiplier);
-                        }
-                    } else if (left_open || right_open) {
-                        if (left + right < 5) {
-                            score = Math.max(score, (int) Math.pow(left + right, 2));
+
+                    if (left + right < 5 && (left_open || right_open)) {
+                        score = Math.max(score, (int) Math.pow(4, left + right + 1));
+                        if (left_open && right_open) {
+                            score *= openMultiplier;
                         }
                     }
                 }
@@ -193,13 +191,10 @@ public class Game {
                         return 1000;
                     }
 
-                    if (up_open && down_open) {
-                        if (up + down < 5) {
-                            score = Math.max(score, (int) Math.pow(up + down, 2) * openMultiplier);
-                        }
-                    } else if (up_open || down_open) {
-                        if (up + down < 5) {
-                            score = Math.max(score, (int) Math.pow(up + down, 2));
+                    if (up + down < 5 && (up_open || down_open)) {
+                        score = Math.max(score, (int) Math.pow(4, up + down + 1));
+                        if (up_open && down_open) {
+                            score *= openMultiplier;
                         }
                     }
                 }
@@ -220,13 +215,10 @@ public class Game {
                         return 1000;
                     }
 
-                    if (upLeft_open && downRight_open) {
-                        if (upLeft + downRight < 5) {
-                            score = Math.max(score, (int) Math.pow(upLeft + downRight, 2) * openMultiplier);
-                        }
-                    } else if (upLeft_open || downRight_open) {
-                        if (upLeft + downRight < 5) {
-                            score = Math.max(score, (int) Math.pow(upLeft + downRight, 2));
+                    if (upLeft + downRight < 5 && (upLeft_open || downRight_open)) {
+                        score = Math.max(score, (int) Math.pow(4, upLeft + downRight + 1));
+                        if (upLeft_open && downRight_open) {
+                            score *= openMultiplier;
                         }
                     }
                 }
@@ -247,13 +239,10 @@ public class Game {
                         return 1000;
                     }
 
-                    if (upRight_open && downLeft_open) {
-                        if (upRight + downLeft < 5) {
-                            score = Math.max(score, (int) Math.pow(upRight + downLeft, 2) * openMultiplier);
-                        }
-                    } else if (upRight_open || downLeft_open) {
-                        if (upRight + downLeft < 5) {
-                            score = Math.max(score, (int) Math.pow(upRight + downLeft, 2));
+                    if (upRight + downLeft < 5 && (upRight_open || downLeft_open)) {
+                        score = Math.max(score, (int) Math.pow(4, upRight + downLeft + 1));
+                        if (upRight_open && downLeft_open) {
+                            score *= openMultiplier;
                         }
                     }
                 }
