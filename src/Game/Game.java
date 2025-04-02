@@ -139,7 +139,7 @@ public class Game {
     public int evaluateScore() {
         int blackScore = getBestScore('B');
         int whiteScore = getBestScore('W');
-        return blackScore - whiteScore;
+        return whiteScore - blackScore;
     }
 
     private int getBestScore(char color) {

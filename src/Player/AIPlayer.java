@@ -29,12 +29,17 @@ public class AIPlayer extends Player{
         System.out.println("AI is making a move...");
         CellPos bestMove = null;
         int bestScore = Integer.MIN_VALUE;
-        for (int i = 0; i < game.getSize(); i++) {
+        char aiColour = this.getColor(); // replaced Andy's toggle with ternary below
+        char playerColour = (aiColour == 'W') ? 'B' : 'W';
+        for (int i = 0; i < game.getSize(); i++) {  // search moves
             for (int j = 0; j < game.getSize(); j++) {
                 CellPos pos = new CellPos(i, j);
                 if (!game.isCellEmpty(pos)) continue;
-                Game copy = game.copy();
+                Game copy = game.copy();    // attempt the move
                 copy.setCell(pos, this.getColor());
+                if (copy.checkForTermination(pos)){ // return early
+                    return pos;
+                }
                 char nextColor;
                 boolean maximizing;
                 if (this.getColor() == 'W') {
