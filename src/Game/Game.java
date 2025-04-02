@@ -18,6 +18,15 @@ public class Game {
         return true;
     }
 
+    public boolean clearCell(CellPos pos) {
+        if (board[pos.row][pos.col] == 0) {
+            return false;
+        }
+
+        board[pos.row][pos.col] = (char) 0;
+        return true;
+    }
+
     public boolean checkForTermination(CellPos lastMove) {
         char color = board[lastMove.row][lastMove.col];
 
@@ -100,16 +109,6 @@ public class Game {
 
     public boolean isCellEmpty(CellPos pos) {
         return board[pos.row][pos.col] == 0;
-    }
-
-    public Game copy() {
-        Game copy = new Game(size, winningLength);
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                copy.setCell(new CellPos(i, j), board[i][j]);
-            }
-        }
-        return copy;
     }
 
     public int getSize() {

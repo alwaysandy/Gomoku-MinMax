@@ -35,12 +35,12 @@ public class AIPlayer extends Player{
             for (int j = 0; j < game.getSize(); j++) {
                 CellPos pos = new CellPos(i, j);
                 if (!game.isCellEmpty(pos)) continue;
-                Game copy = game.copy();    // attempt the move
-                copy.setCell(pos, this.getColor());
-                if (copy.checkForTermination(pos)){ // return early
+                game.setCell(pos, this.getColor());
+                if (game.checkForTermination(pos)){ // return early
                     return pos;
                 }
-                int score = miniMax(pos, copy, 3, false, playerColour, aiColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                int score = miniMax(pos, game, 3, false, playerColour, aiColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                game.clearCell(pos);
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = pos;
@@ -63,17 +63,15 @@ public class AIPlayer extends Player{
 
         char nextColour = (currentColour == 'B') ? 'W' : 'B';
 
-        boolean betabreak = false;
         if (isMaximizing) {
             int maxScore = Integer.MIN_VALUE;
             for (int i = 0; i < game.getSize(); i++) {
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
-                    Game nextState = game.copy();
-                    nextState.setCell(pos, currentColour);
-
-                    int score = miniMax(pos, nextState, depth - 1, false, nextColour, aiColour, alpha, beta);
+                    game.setCell(pos, currentColour);
+                    int score = miniMax(pos, game, depth - 1, false, nextColour, aiColour, alpha, beta);
+                    game.clearCell(pos);
                     if (score > beta) {
                         return score;
                     }
@@ -90,10 +88,9 @@ public class AIPlayer extends Player{
                 for (int j = 0; j < game.getSize(); j++) {
                     CellPos pos = new CellPos(i, j);
                     if (!game.isCellEmpty(pos)) continue;
-                    Game nextState = game.copy();
-                    nextState.setCell(pos, currentColour);
-
-                    int score = miniMax(pos, nextState, depth - 1, true, nextColour, aiColour, alpha, beta);
+                    game.setCell(pos, currentColour);
+                    int score = miniMax(pos, game, depth - 1, true, nextColour, aiColour, alpha, beta);
+                    game.clearCell(pos);
                     if (score < alpha) {
                         return score;
                     }
