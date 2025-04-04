@@ -5,6 +5,7 @@ public class Game {
     private int size;
     private int winningLength;
     private int moveCount;
+    private CellPos lastMove;
 
     public Game(int size, int winningLength) {
         this.size = size;
@@ -16,6 +17,7 @@ public class Game {
         board[pos.row][pos.col] = color;
         // Increment move count for draw check
         moveCount++;
+        lastMove = pos;
     }
 
     public void clearCell(CellPos pos) {
@@ -98,7 +100,11 @@ public class Game {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
                     boardString.append(".  ");
                 } else {
-                    boardString.append(board[i][j] + "  ");
+                    if (lastMove.col == i & lastMove.row == j) {
+                        boardString.append("\u001B[31m" + board[i][j] + "\u001B[0m  ");
+                    } else {
+                        boardString.append(board[i][j]).append("  ");
+                    }
                 }
             }
             boardString.append('\n');
