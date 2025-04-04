@@ -36,14 +36,19 @@ public class AIPlayer extends Player{
                 CellPos pos = new CellPos(i, j);
                 if (!game.isCellEmpty(pos)) continue;
                 game.setCell(pos, this.getColor());
-                if (game.checkForTermination(pos)){ // return early
+
+                // If game is won return early
+                if (game.checkForTermination(pos)) {
                     return pos;
                 }
 
+                // AI already made move so maximize / minimize for the opposite colour of the AI
                 boolean maximizing = playerColour == 'B';
-                int score = miniMax(pos, game, 3, maximizing, playerColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                int score = miniMax(pos, game, 2, maximizing, playerColour, Integer.MIN_VALUE, Integer.MAX_VALUE);
                 game.clearCell(pos);
 
+                // The best score for white would be negative, so flip it from negative to positive when the AI
+                // is playing as white
                 score = aiColour == 'B' ? score : -score;
                 if (score > bestScore) {
                     bestScore = score;
@@ -56,8 +61,6 @@ public class AIPlayer extends Player{
 
     private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, int alpha, int beta) {
         if (game.checkForTermination(previousMove)) {
-            // switched to ternary,
-            // and switched to values instead of just constants for the winner value
             char winner = game.getCell(previousMove);
             return winner == 'B' ? 1000000 : -1000000;
         }
