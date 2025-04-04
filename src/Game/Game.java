@@ -142,7 +142,7 @@ public class Game {
     }
 
     private int getColoursScore(char color) {
-        int score = 0;
+        int score = -10000000;
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 CellPos curr = new CellPos(row, col);
@@ -150,57 +150,10 @@ public class Game {
                     continue;
                 }
 
-                if (canPlaceFive(curr, CellPos.Left(), CellPos.Right(), color)) {
-                    int left = countInDirection(curr, CellPos.Left(), color);
-                    boolean left_open = isValidAxis(col - left - 1)
-                            && this.isCellEmpty(new CellPos(row, col - left - 1));
-
-                    int right = countInDirection(curr, CellPos.Right(), color);
-                    boolean right_open = isValidAxis(col + right + 1)
-                            && this.isCellEmpty(new CellPos(row, col + right + 1));
-
-                    score = calculateScore(score, left, right, left_open, right_open);
-                }
-
-                if (canPlaceFive(curr, CellPos.Up(), CellPos.Down(), color)) {
-                    int up = countInDirection(curr, CellPos.Up(), color);
-                    boolean up_open = isValidAxis(row - up - 1)
-                            && this.isCellEmpty(new CellPos(row - up - 1, col));
-
-                    int down = countInDirection(curr, CellPos.Down(), color);
-                    boolean down_open = isValidAxis(row + down + 1)
-                            && this.isCellEmpty(new CellPos(row + down + 1, col));
-
-                    score = calculateScore(score, up, down, up_open, down_open);
-                }
-
-                if (canPlaceFive(curr, CellPos.UpLeft(), CellPos.DownRight(), color)) {
-                    int upLeft = countInDirection(curr, CellPos.UpLeft(), color);
-                    boolean upLeft_open = isValidAxis(row - upLeft - 1)
-                            && isValidAxis(col - upLeft - 1)
-                            && this.isCellEmpty(new CellPos(row - upLeft - 1, col - upLeft - 1));
-
-                    int downRight = countInDirection(curr, CellPos.DownRight(), color);
-                    boolean downRight_open = isValidAxis(row + downRight + 1)
-                            && isValidAxis(col + downRight + 1)
-                            && this.isCellEmpty(new CellPos(row + downRight + 1, col + downRight + 1));
-
-                    score = calculateScore(score, upLeft, downRight, upLeft_open, downRight_open);
-                }
-
-                if (canPlaceFive(curr, CellPos.UpRight(), CellPos.DownLeft(), color)) {
-                    int upRight = countInDirection(curr, CellPos.UpRight(), color);
-                    boolean upRight_open = isValidAxis(row - upRight - 1)
-                            && isValidAxis(col + upRight + 1)
-                            && this.isCellEmpty(new CellPos(row - upRight - 1, col + upRight + 1));
-
-                    int downLeft = countInDirection(curr, CellPos.DownLeft(), color);
-                    boolean downLeft_open = isValidAxis(row + downLeft + 1)
-                            && isValidAxis(col - downLeft - 1)
-                            && this.isCellEmpty(new CellPos(row + downLeft + 1, col - downLeft - 1));
-
-                    score = calculateScore(score, upRight, downLeft, upRight_open, downLeft_open);
-                }
+                score = Math.max(score, scoreLine(curr, CellPos.Left(), CellPos.Right(), color));
+                score = Math.max(score, scoreLine(curr, CellPos.Up(), CellPos.Down(), color));
+                score = Math.max(score, scoreLine(curr, CellPos.UpLeft(), CellPos.DownRight(), color));
+                score = Math.max(score, scoreLine(curr, CellPos.UpRight(), CellPos.DownLeft(), color));
             }
         }
 
@@ -213,13 +166,35 @@ public class Game {
         return (axis_one_valid + axis_two_valid >= 4);
     }
 
-    private int calculateScore(int score, int axis_one_count, int axis_two_count, boolean axis_one_open, boolean axis_two_open) {
+    private int scoreLine(CellPos curr, CellPos dirOne, CellPos dirTwo, char color) {
+        int score = -10000000;
+        if (!canPlaceFive(curr, dirOne, dirTwo, color)) {
+            return score;
+        }
+        int dirOneCount = countInDirection(curr, dirOne, color);
+        int emptyRow = curr.row + dirOne.row * dirOneCount + dirOne.row;
+        int emptyCol = curr.col + dirOne.col * dirOneCount + dirOne.col;
+        boolean dirOneOpen = isValidAxis(emptyRow)
+                && isValidAxis(emptyCol)
+                && this.isCellEmpty(new CellPos(emptyRow, emptyCol));
+
+        int dirTwoCount = countInDirection(curr, dirTwo, color);
+        emptyRow = curr.row + dirTwo.row * dirTwoCount + dirTwo.row;
+        emptyCol = curr.col + dirTwo.col * dirTwoCount + dirTwo.col;
+        boolean dirTwoOpen = isValidAxis(emptyRow)
+                && isValidAxis(emptyCol)
+                && this.isCellEmpty(new CellPos(emptyRow, emptyCol));
+
         int openMultiplier = 2;
-        if (axis_one_count + axis_two_count < 5 && (axis_one_open || axis_two_open)) {
-            score = Math.max(score, (int) Math.pow(4, axis_one_count + axis_two_count + 1));
-            if (axis_one_open && axis_two_open) {
+        if (dirOneCount + dirTwoCount < 5 && (dirOneOpen || dirTwoOpen)) {
+            score = Math.max(score, (int) Math.pow(10, dirOneCount + dirTwoCount + 1));
+            if (dirOneOpen && dirTwoOpen) {
                 score *= openMultiplier;
             }
+
+            int rowScore = 4 - Math.abs(4 - curr.row);
+            int colScore = 4 - Math.abs(4 - curr.col);
+            score += Math.min(rowScore, colScore);
         }
 
         return score;
