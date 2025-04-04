@@ -11,17 +11,9 @@ public class Game {
         board = new char[size][size];
     }
 
-    public boolean setCell(CellPos pos, char color) {
-        if (pos.row < 0 || pos.row >= size || pos.col < 0 || pos.col >= size) return false;
-        if (board[pos.row][pos.col] != 0) return false;
+    public void setCell(CellPos pos, char color) {
         board[pos.row][pos.col] = color;
-        return true;
     }
-
-    public boolean clearCell(CellPos pos) {
-        if (board[pos.row][pos.col] == 0) {
-            return false;
-        }
 
         board[pos.row][pos.col] = (char) 0;
         return true;
