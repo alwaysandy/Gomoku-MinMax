@@ -4,6 +4,7 @@ public class Game {
     private char[][] board;
     private int size;
     private int winningLength;
+    private int moveCount;
 
     public Game(int size, int winningLength) {
         this.size = size;
@@ -15,6 +16,8 @@ public class Game {
         if (pos.row < 0 || pos.row >= size || pos.col < 0 || pos.col >= size) return false;
         if (board[pos.row][pos.col] != 0) return false;
         board[pos.row][pos.col] = color;
+        // Increment move count for draw check
+        moveCount++;
         return true;
     }
 
@@ -24,9 +27,14 @@ public class Game {
         }
 
         board[pos.row][pos.col] = (char) 0;
+        // Decrement move count for draw check
+        moveCount--;
         return true;
     }
 
+    /*
+    Count in all 4 axes (8 directions) to check if the latest move is a winning move
+     */
     public boolean checkForTermination(CellPos lastMove) {
         char color = board[lastMove.row][lastMove.col];
 
@@ -50,6 +58,10 @@ public class Game {
                 rightDiag == winningLength);
     }
 
+    /*
+    A helper function to count the number of pieces in a direction.
+    Stop when the color is different, out of bounds, or empty.
+     */
     private int countInDirection(CellPos startPos, CellPos direction, char color) {
         CellPos currentPos = startPos.add(direction);
         int count = 0;
@@ -62,6 +74,9 @@ public class Game {
         return count;
     }
 
+    /*
+    Same as countInDirection, but include empty cells to count how many possible moves there are.
+     */
     private int countPossibleInDirection(CellPos startPos, CellPos direction, char color) {
         CellPos currentPos = startPos.add(direction);
         int count = 0;
@@ -73,14 +88,17 @@ public class Game {
         return count;
     }
 
-
     @Override
     public String toString() {
         StringBuilder boardString = new StringBuilder();
+
+        // Construct column headers
         boardString.append("  ");
         for (int i = 0; i < size; i++) {
-            boardString.append((char)(i + 'A') + " ");
+            boardString.append((char)(i + 'a') + " ");
         }
+
+        // Construct board grid with row number
         boardString.append('\n');
         for (int i = 0; i < size; i++) {
             boardString.append(i + " ");
@@ -100,6 +118,9 @@ public class Game {
         System.out.println(this.toString());
     }
 
+    /*
+    Make sure the move is within the board
+     */
     public boolean isCorrectMove(CellPos pos) {
         return pos.row >= 0 &&
                 pos.row < size &&
@@ -115,19 +136,18 @@ public class Game {
         return size;
     }
 
+    /*
+    Make sure row or col is within the board. Used to check row/col separately
+     */
     public boolean isValidAxis(int axisValue) {
         return axisValue >= 0 && axisValue < size;
     }
 
+    /*
+    Check if the number of move is equal to the number of all cells
+     */
     public boolean isDraw() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (board[i][j] == 0) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return moveCount == size * size;
     }
 
     public char getCell(CellPos pos) {
