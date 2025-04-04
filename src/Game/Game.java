@@ -4,6 +4,7 @@ public class Game {
     private final char[][] board;
     private final int size;
     private final int winningLength;
+    private CellPos lastMove;
 
     public Game(int size, int winningLength) {
         this.size = size;
@@ -13,6 +14,7 @@ public class Game {
 
     public void setCell(CellPos pos, char color) {
         board[pos.row][pos.col] = color;
+        lastMove = pos;
     }
 
     public void clearCell(CellPos pos) {
@@ -80,7 +82,12 @@ public class Game {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
                     boardString.append(". ");
                 } else {
-                    boardString.append(board[i][j]).append(" ");
+                    if (lastMove.col == i & lastMove.row == j) {
+                        boardString.append("\u001B[31m" + board[i][j] + "\u001B[0m ");
+                    }
+                    else {
+                        boardString.append(board[i][j]).append(" ");
+                    }
                 }
             }
             boardString.append('\n');
