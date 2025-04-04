@@ -160,10 +160,10 @@ public class Game {
         return score;
     }
 
-    private boolean canPlaceFive(CellPos pos, CellPos axis_one, CellPos axis_two, char color) {
-        int axis_one_valid = countPossibleInDirection(pos, axis_one, color);
-        int axis_two_valid = countPossibleInDirection(pos, axis_two, color);
-        return (axis_one_valid + axis_two_valid >= 4);
+    private boolean canPlaceFive(CellPos pos, CellPos dirOne, CellPos dirTwo, char color) {
+        int dirOneValid = countPossibleInDirection(pos, dirOne, color);
+        int dirTwoValid = countPossibleInDirection(pos, dirTwo, color);
+        return (dirOneValid + dirTwoValid >= 4);
     }
 
     private int scoreLine(CellPos curr, CellPos dirOne, CellPos dirTwo, char color) {
