@@ -173,7 +173,7 @@ public class Game {
 
     // Heuristic:
     // - 10 ^ n, (where n is the number of pieces in a row)
-    // - multiply by 2 if there's open on both sides
+    // - multiply by 2 if there's an open square on both sides to place a piece
     // - override with negative inf if block on either
     // - Move closer to center has a slightly higher score
     private int scoreLine(CellPos curr, CellPos dirOne, CellPos dirTwo, char color) {
@@ -183,6 +183,7 @@ public class Game {
         }
 
         // Check if there is an open space on either side of the line
+        // If ther
         int dirOneCount = countInDirection(curr, dirOne, color);
         CellPos edgeOne = curr.add(dirOne.mult(dirOneCount)).add(dirOne);
         boolean dirOneOpen = isCorrectMove(edgeOne) && this.isCellEmpty(edgeOne);
@@ -192,10 +193,10 @@ public class Game {
         CellPos edgeTwo = curr.add(dirTwo.mult(dirTwoCount)).add(dirTwo);
         boolean dirTwoOpen = isCorrectMove(edgeTwo) && this.isCellEmpty(edgeTwo);
 
-        // If there is an open space on either side, multiply the score by 10
+        // Define scale to multiple score by if both sides of a line have a free square for a piece
         int openMultiplier = 2;
         if (dirOneCount + dirTwoCount < 5 && (dirOneOpen || dirTwoOpen)) {
-            // If there is an open space on one side, multiply the score by 10
+            // Score calculated as 10 ^ length of continuous pieces
             score = Math.max(score, (int) Math.pow(10, dirOneCount + dirTwoCount + 1));
             // If there is an open space on both sides, multiply the score by 2
             if (dirOneOpen && dirTwoOpen) {
