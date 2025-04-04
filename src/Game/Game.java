@@ -15,8 +15,8 @@ public class Game {
         board[pos.row][pos.col] = color;
     }
 
+    public void clearCell(CellPos pos) {
         board[pos.row][pos.col] = (char) 0;
-        return true;
     }
 
     public boolean checkForTermination(CellPos lastMove) {
