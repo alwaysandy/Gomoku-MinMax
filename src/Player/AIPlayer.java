@@ -63,9 +63,7 @@ public class AIPlayer extends Player{
         }
 
         if (game.isDraw()) return 0;
-        if (depth == 0) {
-            return game.evaluateScore();
-        }
+        if (depth == 0) return game.evaluateScore();
 
         char nextColour = (currentColour == 'B') ? 'W' : 'B';
 
@@ -78,10 +76,7 @@ public class AIPlayer extends Player{
                     game.setCell(pos, currentColour);
                     score = Math.max(score, miniMax(pos, game, depth - 1, false, nextColour, alpha, beta));
                     game.clearCell(pos);
-                    if (score > beta) {
-                        return score;
-                    }
-
+                    if (score > beta) return score;
                     alpha = Math.max(score, alpha);
                 }
 
@@ -96,9 +91,7 @@ public class AIPlayer extends Player{
                     game.setCell(pos, currentColour);
                     score = Math.min(score, miniMax(pos, game, depth - 1, true, nextColour, alpha, beta));
                     game.clearCell(pos);
-                    if (score < alpha) {
-                        return score;
-                    }
+                    if (score < alpha) return score;
                     beta = Math.min(beta, score);
                 }
             }

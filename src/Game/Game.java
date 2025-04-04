@@ -93,7 +93,7 @@ public class Game {
         StringBuilder boardString = new StringBuilder();
 
         // Construct column headers
-        boardString.append("  ");
+        boardString.append("   ");
         for (int i = 0; i < size; i++) {
             boardString.append((char)(i + 'a') + "  ");
         }
@@ -104,7 +104,7 @@ public class Game {
             boardString.append(i + "  ");
             for (int j = 0; j < size; j++) {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
-                    boardString.append(". ");
+                    boardString.append(".  ");
                 } else {
                     boardString.append(board[i][j] + "  ");
                 }
@@ -179,9 +179,11 @@ public class Game {
         return (dirOneValid + dirTwoValid >= 4);
     }
 
-    /*
-    TODO: Check with Andy about this
-     */
+    // Heuristic:
+    // - 10 ^ n, (where n is the number of pieces in a row)
+    // - multiply by 2 if there's open on both sides
+    // - override with negative inf if block on either
+    // - Move closer to center has a slightly higher score
     private int scoreLine(CellPos curr, CellPos dirOne, CellPos dirTwo, char color) {
         int score = -10000000;
         if (!canPlaceFive(curr, dirOne, dirTwo, color)) {
@@ -193,10 +195,12 @@ public class Game {
         CellPos edgeOne = curr.add(dirOne.mult(dirOneCount)).add(dirOne);
         boolean dirOneOpen = isCorrectMove(edgeOne) && this.isCellEmpty(edgeOne);
 
+        // Check if there is an open space on either side of the line
         int dirTwoCount = countInDirection(curr, dirTwo, color);
         CellPos edgeTwo = curr.add(dirTwo.mult(dirTwoCount)).add(dirTwo);
         boolean dirTwoOpen = isCorrectMove(edgeTwo) && this.isCellEmpty(edgeTwo);
 
+        // If there is an open space on either side, multiply the score by 10
         int openMultiplier = 2;
         if (dirOneCount + dirTwoCount < 5 && (dirOneOpen || dirTwoOpen)) {
             // If there is an open space on one side, multiply the score by 10
