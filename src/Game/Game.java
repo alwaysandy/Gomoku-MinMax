@@ -89,7 +89,7 @@ public class Game {
     }
 
     public void displayBoard() {
-        System.out.println(this.toString());
+        System.out.println(this);
     }
 
     public boolean isCorrectMove(CellPos pos) {
