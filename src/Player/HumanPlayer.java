@@ -30,28 +30,25 @@ public class HumanPlayer extends Player {
     }
 
     private CellPos readMove(Game game) {
-        int row = receiveMove("row", game);
-        int col = receiveMove("col", game);
-        return new CellPos(row, col);
-    }
+        int row, col;
 
-
-    private int receiveMove(String axis, Game game) {
-        int value;
-        while (true) {
-            try {
-                Scanner input = new Scanner(System.in);
-                System.out.print("Enter your " + axis + ": ");
-                value = input.nextInt();
-                if (game.isValidAxis(value)) {
-                    return value;
-                } else {
-                    System.out.println("Invalid " + axis + ". Please Enter your " + axis + ": ");
-                }
-            } catch (Exception e) {
-                System.out.println("Please Enter a valid number.");
+        while(true) {
+            row = Input.readRow(game.getSize());
+            if (!game.isValidAxis(row)) {
+                System.out.println("Invalid row, try again");
+                continue;
             }
+
+            col = Input.readCol(game.getSize());
+            if (!game.isValidAxis(col)) {
+                System.out.println("Invalid column, try again");
+                continue;
+            }
+
+            break;
         }
+
+        return new CellPos(row, col);
     }
 
     @Override

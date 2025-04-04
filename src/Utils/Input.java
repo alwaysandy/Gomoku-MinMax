@@ -45,4 +45,33 @@ public class Input {
         }
         return options;
     }
+
+    public static int readRow(int size) {
+        int value;
+        while (true) {
+            try {
+                Scanner input = new Scanner(System.in);
+                System.out.print("Enter your row (0-" + (size - 1) + "): ");
+                value = input.nextInt();
+                return value;
+            } catch (Exception e) {
+                System.out.println("Please Enter a valid number.");
+            }
+        }
+    }
+
+    public static int readCol(int size) {
+        int value = -1;
+        while(true) {
+            try {
+                Scanner input = new Scanner(System.in);
+                System.out.print("Enter column (a-" + (char)('a' + size) + "): ");
+                String colChar = input.next().toLowerCase();
+                value = colChar.charAt(0) - 'a';
+                return value;
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please try again.");
+            }
+        }
+    }
 }
