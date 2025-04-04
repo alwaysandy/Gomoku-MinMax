@@ -27,22 +27,35 @@ public class Main {
         System.out.println("=== Player 1 ===");
         players[0] = new HumanPlayer(availableColors);
 
+        /*
+        Using strategy pattern to allow for different types of players
+         */
         char[] remainingColors = new char[]{ players[0].getOpponentColor() };
-        if (modeChoice == 1) {
+
+        if (modeChoice == 1) { // Single player
             players[1] = new AIPlayer(remainingColors);
-        } else if (modeChoice == 2) {
+        } else if (modeChoice == 2) { // Multiplayer
             System.out.println("=== Player 2 ===");
             players[1] = new HumanPlayer(remainingColors);
         }
 
-        // Player with Black piece starts first
+        /*
+        Using an index to keep track of the current player which can be swapped around and called makeMove
+        Player with Black piece starts first
+         */
         int currentPlayerIndex = players[0].getColor() == 'B' ? 0 : 1;
 
+        /*
+        Game loop
+         */
         while (true) {
             Player currentPlayer = players[currentPlayerIndex];
 
             game.displayBoard();
             currentPlayer.displayTurnIndicator();
+            /*
+            Read the move from the player (either AI or Human)
+             */
             CellPos movePos = currentPlayer.makeMove(game);
             game.setCell(movePos, currentPlayer.getColor());
 
