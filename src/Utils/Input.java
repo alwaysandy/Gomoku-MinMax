@@ -3,13 +3,7 @@ package Utils;
 import java.util.Scanner;
 
 public class Input {
-    /**
-     * Displays options and reads user choice.
-     * 
-     * @param prompt The prompt to display to the user
-     * @param options Array of options to display
-     * @return The index of the chosen option (1-based)
-     */
+    // Displays options and reads user choice.
     public static int readChoice(String prompt, String[] options) {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
@@ -34,12 +28,7 @@ public class Input {
         return choice;
     }
 
-    /**
-     * Reads text input from the user.
-     * 
-     * @param prompt The prompt to display to the user
-     * @return The text entered by the user (non-empty)
-     */
+    // Reads text input from the user.
     public static String readText(String prompt) {
         Scanner scanner = new Scanner(System.in);
         System.out.print(prompt);
@@ -51,12 +40,7 @@ public class Input {
         return text;
     }
 
-    /**
-     * Converts an array of characters to an array of strings.
-     * 
-     * @param chars Array of characters to convert
-     * @return Array of strings, each containing a single character
-     */
+    // Converts an array of characters to an array of strings.
     public static String[] makeOptionsFromChars(char[] chars) {
         String[] options = new String[chars.length];
         for (int i = 0; i < chars.length; i++) {
@@ -65,12 +49,7 @@ public class Input {
         return options;
     }
 
-    /**
-     * Reads a row input (numerical) from the user.
-     * 
-     * @param size The maximum size of the board
-     * @return The row index chosen by the user
-     */
+    // Reads a row input (numerical) from the user.
     public static int readRow(int size) {
         int value;
         while (true) {
@@ -85,12 +64,7 @@ public class Input {
         }
     }
 
-    /**
-     * Reads a column input (alphabetical) from the user.
-     * 
-     * @param size The maximum size of the board
-     * @return The column index chosen by the user
-     */
+    // Reads a column input (alphabetical) from the user.
     public static int readCol(int size) {
         int value = -1;
         while(true) {

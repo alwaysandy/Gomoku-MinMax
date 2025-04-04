@@ -17,19 +17,17 @@ public class Main {
                         "Multiplayer"
                 });
 
-        int boardSize = 9;
-        int winningLength = 5;
+        final int BOARD_SIZE = 9;
+        final int WINNING_LENGTH = 5;
 
-        Game game = new Game(boardSize, winningLength);
+        Game game = new Game(BOARD_SIZE, WINNING_LENGTH);
         Player[] players = new Player[2];
 
         char[] availableColors = new char[]{ 'B', 'W' };
         System.out.println("=== Player 1 ===");
         players[0] = new HumanPlayer(availableColors);
 
-        /*
-        Using strategy pattern to allow for different types of players
-         */
+        // Using strategy pattern to allow for different types of players
         char[] remainingColors = new char[]{ players[0].getOpponentColor() };
 
         if (modeChoice == 1) { // Single player
@@ -39,23 +37,18 @@ public class Main {
             players[1] = new HumanPlayer(remainingColors);
         }
 
-        /*
-        Using an index to keep track of the current player which can be swapped around and called makeMove
-        Player with Black piece starts first
-         */
+        // Using an index to keep track of the current player which can be swapped around and called makeMove
+        // Player with Black piece starts first
         int currentPlayerIndex = players[0].getColor() == 'B' ? 0 : 1;
 
-        /*
-        Game loop
-         */
+        // Game loop
         while (true) {
             Player currentPlayer = players[currentPlayerIndex];
 
             game.displayBoard();
             currentPlayer.displayTurnIndicator();
-            /*
-            Read the move from the player (either AI or Human)
-             */
+
+            // Read the move from the player (either AI or Human)
             CellPos movePos = currentPlayer.makeMove(game);
             game.setCell(movePos, currentPlayer.getColor());
             for (int i = 0; i < 100; i++) {

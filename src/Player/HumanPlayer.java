@@ -29,6 +29,16 @@ public class HumanPlayer extends Player {
         System.out.println("Player " + this.getName() + " (" + this.getColor() + ")" + "'s turn");
     }
 
+    @Override
+    public CellPos makeMove(Game game) {
+        CellPos pos = readMove(game);
+        while (!game.isCellEmpty(pos)) {
+            System.out.println("Cell is not empty, try again");
+            pos = readMove(game);
+        }
+        return pos;
+    }
+
     private CellPos readMove(Game game) {
         int row, col;
 
@@ -49,15 +59,5 @@ public class HumanPlayer extends Player {
         }
 
         return new CellPos(row, col);
-    }
-
-    @Override
-    public CellPos makeMove(Game game) {
-        CellPos pos = readMove(game);
-        while (!game.isCellEmpty(pos)) {
-            System.out.println("Cell is not empty, try again");
-            pos = readMove(game);
-        }
-        return pos;
     }
 }

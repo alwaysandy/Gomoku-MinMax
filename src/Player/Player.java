@@ -3,6 +3,8 @@ package Player;
 import Game.Game;
 import Game.CellPos;
 
+// Used for strategy pattern allowing for switching
+// between AI and Human without knowledge of the implementation
 public abstract class Player {
     private String name;
     private char color;
