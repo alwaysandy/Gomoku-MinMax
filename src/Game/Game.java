@@ -1,9 +1,9 @@
 package Game;
 
 public class Game {
-    private char[][] board;
-    private int size;
-    private int winningLength;
+    private final char[][] board;
+    private final int size;
+    private final int winningLength;
 
     public Game(int size, int winningLength) {
         this.size = size;
