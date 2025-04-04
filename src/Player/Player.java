@@ -4,8 +4,8 @@ import Game.Game;
 import Game.CellPos;
 
 public abstract class Player {
-    private String name;
-    private char color;
+    private final String name;
+    private final char color;
 
     protected Player(char[] availableColors) {
         this.name = this.initializeName();
