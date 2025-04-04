@@ -4,6 +4,7 @@ public class Game {
     private char[][] board;
     private int size;
     private int winningLength;
+    private CellPos lastMove;
 
     public Game(int size, int winningLength) {
         this.size = size;
@@ -15,6 +16,7 @@ public class Game {
         if (pos.row < 0 || pos.row >= size || pos.col < 0 || pos.col >= size) return false;
         if (board[pos.row][pos.col] != 0) return false;
         board[pos.row][pos.col] = color;
+        lastMove = pos;
         return true;
     }
 
