@@ -1,9 +1,9 @@
 package Game;
 
 public class Game {
-    private char[][] board;
-    private int size;
-    private int winningLength;
+    private final char[][] board;
+    private final int size;
+    private final int winningLength;
 
     public Game(int size, int winningLength) {
         this.size = size;
@@ -11,20 +11,12 @@ public class Game {
         board = new char[size][size];
     }
 
-    public boolean setCell(CellPos pos, char color) {
-        if (pos.row < 0 || pos.row >= size || pos.col < 0 || pos.col >= size) return false;
-        if (board[pos.row][pos.col] != 0) return false;
+    public void setCell(CellPos pos, char color) {
         board[pos.row][pos.col] = color;
-        return true;
     }
 
-    public boolean clearCell(CellPos pos) {
-        if (board[pos.row][pos.col] == 0) {
-            return false;
-        }
-
+    public void clearCell(CellPos pos) {
         board[pos.row][pos.col] = (char) 0;
-        return true;
     }
 
     public boolean checkForTermination(CellPos lastMove) {
@@ -79,16 +71,16 @@ public class Game {
         StringBuilder boardString = new StringBuilder();
         boardString.append("  ");
         for (int i = 0; i < size; i++) {
-            boardString.append(i + " ");
+            boardString.append(i).append(" ");
         }
         boardString.append('\n');
         for (int i = 0; i < size; i++) {
-            boardString.append(i + " ");
+            boardString.append(i).append(" ");
             for (int j = 0; j < size; j++) {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
                     boardString.append(". ");
                 } else {
-                    boardString.append(board[i][j] + " ");
+                    boardString.append(board[i][j]).append(" ");
                 }
             }
             boardString.append('\n');
@@ -97,7 +89,7 @@ public class Game {
     }
 
     public void displayBoard() {
-        System.out.println(this.toString());
+        System.out.println(this);
     }
 
     public boolean isCorrectMove(CellPos pos) {
