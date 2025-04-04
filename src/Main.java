@@ -58,6 +58,10 @@ public class Main {
              */
             CellPos movePos = currentPlayer.makeMove(game);
             game.setCell(movePos, currentPlayer.getColor());
+            for (int i = 0; i < 100; i++) {
+                System.out.println();
+            }
+            System.out.println("Last move: " + movePos.row + " " + (char)(movePos.col + 'a'));
 
             if (game.checkForTermination(movePos)) {
                 game.displayBoard();

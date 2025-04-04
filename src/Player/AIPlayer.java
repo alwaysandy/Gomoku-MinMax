@@ -31,8 +31,8 @@ public class AIPlayer extends Player{
         int bestScore = Integer.MIN_VALUE;
         char aiColour = this.getColor(); // replaced Andy's toggle with ternary below
         char playerColour = (aiColour == 'B') ? 'W' : 'B';
-        for (int i = 0; i < game.getSize(); i++) {  // search moves
-            for (int j = 0; j < game.getSize(); j++) {
+        for (int i = 0; i < game.getSize(); i++) {
+            for (int j = 0; j < game.getSize(); j++) { // search moves
                 CellPos pos = new CellPos(i, j);
                 if (!game.isCellEmpty(pos)) continue;
                 game.setCell(pos, this.getColor());
@@ -56,7 +56,9 @@ public class AIPlayer extends Player{
 
     private int miniMax(CellPos previousMove, Game game, int depth, boolean isMaximizing, char currentColour, int alpha, int beta) {
         if (game.checkForTermination(previousMove)) {
-            char winner = game.getCell(previousMove);   // switched to ternary, and switched to values instead of just constants for the winner value
+            // switched to ternary,
+            // and switched to values instead of just constants for the winner value
+            char winner = game.getCell(previousMove);
             return winner == 'B' ? 1000000 : -1000000;
         }
 
