@@ -71,16 +71,16 @@ public class Game {
         StringBuilder boardString = new StringBuilder();
         boardString.append("  ");
         for (int i = 0; i < size; i++) {
-            boardString.append(i + " ");
+            boardString.append(i).append(" ");
         }
         boardString.append('\n');
         for (int i = 0; i < size; i++) {
-            boardString.append(i + " ");
+            boardString.append(i).append(" ");
             for (int j = 0; j < size; j++) {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
                     boardString.append(". ");
                 } else {
-                    boardString.append(board[i][j] + " ");
+                    boardString.append(board[i][j]).append(" ");
                 }
             }
             boardString.append('\n');
