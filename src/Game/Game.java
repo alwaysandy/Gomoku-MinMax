@@ -90,7 +90,12 @@ public class Game {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
                     boardString.append(". ");
                 } else {
-                    boardString.append(board[i][j] + " ");
+                    if (lastMove.col == i & lastMove.row == j) {
+                        boardString.append("\u001B[31m" + board[i][j] + "\u001B[0m ");
+                    }
+                    else {
+                        boardString.append(board[i][j] + " ");
+                    }
                 }
             }
             boardString.append('\n');
