@@ -1,5 +1,7 @@
 package Game;
 
+// A simple class to represent a position on the board
+// with Vector operations
 public class CellPos {
     public int row;
     public int col;
@@ -11,6 +13,10 @@ public class CellPos {
 
     public CellPos add(CellPos other) {
         return new CellPos(this.row + other.row, this.col + other.col);
+    }
+
+    public CellPos mult(int scalar) {
+        return new CellPos(this.row * scalar, this.col * scalar);
     }
 
     public static CellPos Left() {

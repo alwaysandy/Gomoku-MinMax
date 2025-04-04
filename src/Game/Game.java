@@ -95,18 +95,18 @@ public class Game {
         // Construct column headers
         boardString.append("  ");
         for (int i = 0; i < size; i++) {
-            boardString.append((char)(i + 'a') + " ");
+            boardString.append((char)(i + 'a') + "  ");
         }
 
         // Construct board grid with row number
         boardString.append('\n');
         for (int i = 0; i < size; i++) {
-            boardString.append(i + " ");
+            boardString.append(i + "  ");
             for (int j = 0; j < size; j++) {
                 if (board[i][j] != 'W' && board[i][j] != 'B') {
                     boardString.append(". ");
                 } else {
-                    boardString.append(board[i][j] + " ");
+                    boardString.append(board[i][j] + "  ");
                 }
             }
             boardString.append('\n');
@@ -118,9 +118,6 @@ public class Game {
         System.out.println(this.toString());
     }
 
-    /*
-    Make sure the move is within the board
-     */
     public boolean isCorrectMove(CellPos pos) {
         return pos.row >= 0 &&
                 pos.row < size &&
@@ -136,16 +133,10 @@ public class Game {
         return size;
     }
 
-    /*
-    Make sure row or col is within the board. Used to check row/col separately
-     */
     public boolean isValidAxis(int axisValue) {
         return axisValue >= 0 && axisValue < size;
     }
 
-    /*
-    Check if the number of move is equal to the number of all cells
-     */
     public boolean isDraw() {
         return moveCount == size * size;
     }
@@ -161,6 +152,7 @@ public class Game {
         return blackScore - whiteScore;
     }
 
+    // Get the score for a specific colour
     private int getColourScore(char color) {
         int score = -10000000;
         for (int row = 0; row < 9; row++) {
@@ -180,34 +172,36 @@ public class Game {
         return score;
     }
 
+    // Are there enough empty spaces to place 5 pieces in a row?
     private boolean canPlaceFive(CellPos pos, CellPos dirOne, CellPos dirTwo, char color) {
         int dirOneValid = countPossibleInDirection(pos, dirOne, color);
         int dirTwoValid = countPossibleInDirection(pos, dirTwo, color);
         return (dirOneValid + dirTwoValid >= 4);
     }
 
+    /*
+    TODO: Check with Andy about this
+     */
     private int scoreLine(CellPos curr, CellPos dirOne, CellPos dirTwo, char color) {
         int score = -10000000;
         if (!canPlaceFive(curr, dirOne, dirTwo, color)) {
             return score;
         }
+
+        // Check if there is an open space on either side of the line
         int dirOneCount = countInDirection(curr, dirOne, color);
-        int emptyRow = curr.row + dirOne.row * dirOneCount + dirOne.row;
-        int emptyCol = curr.col + dirOne.col * dirOneCount + dirOne.col;
-        boolean dirOneOpen = isValidAxis(emptyRow)
-                && isValidAxis(emptyCol)
-                && this.isCellEmpty(new CellPos(emptyRow, emptyCol));
+        CellPos edgeOne = curr.add(dirOne.mult(dirOneCount)).add(dirOne);
+        boolean dirOneOpen = isCorrectMove(edgeOne) && this.isCellEmpty(edgeOne);
 
         int dirTwoCount = countInDirection(curr, dirTwo, color);
-        emptyRow = curr.row + dirTwo.row * dirTwoCount + dirTwo.row;
-        emptyCol = curr.col + dirTwo.col * dirTwoCount + dirTwo.col;
-        boolean dirTwoOpen = isValidAxis(emptyRow)
-                && isValidAxis(emptyCol)
-                && this.isCellEmpty(new CellPos(emptyRow, emptyCol));
+        CellPos edgeTwo = curr.add(dirTwo.mult(dirTwoCount)).add(dirTwo);
+        boolean dirTwoOpen = isCorrectMove(edgeTwo) && this.isCellEmpty(edgeTwo);
 
         int openMultiplier = 2;
         if (dirOneCount + dirTwoCount < 5 && (dirOneOpen || dirTwoOpen)) {
+            // If there is an open space on one side, multiply the score by 10
             score = Math.max(score, (int) Math.pow(10, dirOneCount + dirTwoCount + 1));
+            // If there is an open space on both sides, multiply the score by 2
             if (dirOneOpen && dirTwoOpen) {
                 score *= openMultiplier;
             }
