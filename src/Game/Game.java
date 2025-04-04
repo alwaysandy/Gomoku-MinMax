@@ -136,12 +136,12 @@ public class Game {
     }
 
     public int evaluateScore() {
-        int blackScore = getColoursScore('B');
-        int whiteScore = getColoursScore('W');
+        int blackScore = getColourScore('B');
+        int whiteScore = getColourScore('W');
         return blackScore - whiteScore;
     }
 
-    private int getColoursScore(char color) {
+    private int getColourScore(char color) {
         int score = -10000000;
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
