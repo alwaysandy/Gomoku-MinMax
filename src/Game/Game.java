@@ -183,7 +183,6 @@ public class Game {
         }
 
         // Check if there is an open space on either side of the line
-        // If ther
         int dirOneCount = countInDirection(curr, dirOne, color);
         CellPos edgeOne = curr.add(dirOne.mult(dirOneCount)).add(dirOne);
         boolean dirOneOpen = isCorrectMove(edgeOne) && this.isCellEmpty(edgeOne);
